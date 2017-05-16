@@ -1,4 +1,4 @@
-package com.semanticRelationsExtractor;
+package com.semanticRelationsExtractor.tags;
 
 
 public final class Tags {

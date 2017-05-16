@@ -1,8 +1,8 @@
 package com.semanticRelationsExtractor.preprocessing;
 
-import com.semanticRelationsExtractor.SemanticExtractionFilterCache;
-import com.semanticRelationsExtractor.Tags;
+import com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
+import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.ArrayList;
 import java.util.List;

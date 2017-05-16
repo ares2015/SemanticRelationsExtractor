@@ -1,4 +1,6 @@
-package com.semanticRelationsExtractor;
+package com.semanticRelationsExtractor.cache;
+
+import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.HashSet;
 import java.util.Set;

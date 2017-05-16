@@ -1,7 +1,9 @@
-package com.semanticRelationsExtractor;
+package com.semanticRelationsExtractor.extraction;
 
+import com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache;
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
+import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.List;
 

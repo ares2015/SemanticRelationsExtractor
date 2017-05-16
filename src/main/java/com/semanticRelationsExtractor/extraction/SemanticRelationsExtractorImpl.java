@@ -1,4 +1,4 @@
-package com.semanticRelationsExtractor;
+package com.semanticRelationsExtractor.extraction;
 
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
@@ -7,7 +7,7 @@ import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 /**
  * Created by Oliver on 2/17/2017.
  */
-public class SemanticExtractorImpl implements SemanticExtractor {
+public class SemanticRelationsExtractorImpl implements SemanticRelationsExtractor {
 
     private SubjectExtractor subjectExtractor;
 
@@ -15,8 +15,8 @@ public class SemanticExtractorImpl implements SemanticExtractor {
 
     private NounPredicateExtractor nounPredicateExtractor;
 
-    public SemanticExtractorImpl(SubjectExtractor subjectExtractor, VerbPredicateExtractor verbPredicateExtractor,
-                                 NounPredicateExtractor nounPredicateExtractor) {
+    public SemanticRelationsExtractorImpl(SubjectExtractor subjectExtractor, VerbPredicateExtractor verbPredicateExtractor,
+                                          NounPredicateExtractor nounPredicateExtractor) {
         this.subjectExtractor = subjectExtractor;
         this.verbPredicateExtractor = verbPredicateExtractor;
         this.nounPredicateExtractor = nounPredicateExtractor;
