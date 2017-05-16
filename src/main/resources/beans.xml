@@ -1,0 +1,94 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://mysql15.hostmaster.sk/do784507db"/>
+        <property name="username" value="do784500"/>
+        <property name="password" value="glavoika"/>
+    </bean>
+
+    <!--<bean id="morphemesDetector" class="com.trainingdataprocessor.morphology.MorphemesDetectorImpl"/>-->
+
+    <!--<bean id="tagsWriter" class="com.trainingdataprocessor.writer.tags.TagsWriterImpl"/>-->
+
+    <!--<bean id="bigramsWriter" class="com.trainingdataprocessor.writer.bigrams.BigramsWriterImpl"/>-->
+
+    <!--<bean id="subPathsWriter" class="com.trainingdataprocessor.writer.subpaths.SubPathsWriterImpl"/>-->
+
+    <!--<bean id="semanticsWriter" class="com.trainingdataprocessor.writer.semantics.SemanticsWriterImpl"/>-->
+
+    <!--<bean id="tokenizer" class="com.trainingdataprocessor.tokens.TokenizerImpl"/>-->
+
+    <!--<bean id="tagsEncoder" class="com.trainingdataprocessor.encoding.TagsEncoderImpl"/>-->
+
+    <!--<bean id="listComparator" class="com.trainingdataprocessor.validator.ListComparatorImpl"/>-->
+
+    <!--<bean id="bigramDataListFactory" class="com.trainingdataprocessor.factories.bigram.BigramDataListFactoryImpl"/>-->
+
+    <!--<bean id="multiListFactory" class="com.trainingdataprocessor.factories.multilist.MultiListFactoryImpl"/>-->
+
+    <!--<bean id="subPathDataListFactory"-->
+    <!--class="com.trainingdataprocessor.factories.subpath.SubPathDataListFactoryImpl"/>-->
+
+    <!--<bean id="trainingDataRowListFactory"-->
+    <!--class="com.trainingdataprocessor.factories.row.TrainingDataRowListFactoryImpl">-->
+    <!--<constructor-arg ref="tokenizer"/>-->
+    <!--<constructor-arg ref="tagsEncoder"/>-->
+    <!--<constructor-arg ref="multiListFactory"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="trainingDataValidator" class="com.trainingdataprocessor.validator.TrainingDataValidatorImpl">-->
+    <!--<constructor-arg ref="tokenizer"/>-->
+    <!--<constructor-arg ref="listComparator"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="trainingDataReader" class="com.trainingdataprocessor.reader.TrainingDataFileReaderImpl">-->
+    <!--<constructor-arg ref="trainingDataValidator"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="capitalizedTokensProcessor"-->
+    <!--class="com.trainingdataprocessor.preprocessing.CapitalizedTokensProcessorImpl"/>-->
+
+    <!--<bean id="trainingDataPreprocessor" class="com.trainingdataprocessor.preprocessing.TrainingDataPreprocessorImpl">-->
+    <!--<constructor-arg ref="trainingDataReader"/>-->
+    <!--<constructor-arg ref="trainingDataRowListFactory"/>-->
+    <!--<constructor-arg ref="capitalizedTokensProcessor"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="semanticPreprocessor" class="com.trainingdataprocessor.semantics.preprocessing.SemanticPreprocessorImpl"/>-->
+
+    <!--<bean id="subjectExtractor" class="com.trainingdataprocessor.semantics.extraction.SubjectExtractorImpl"/>-->
+
+    <!--<bean id="verbPredicateExtractor"-->
+    <!--class="com.trainingdataprocessor.semantics.extraction.VerbPredicateExtractorImpl"/>-->
+
+    <!--<bean id="nounPredicateExtractor"-->
+    <!--class="com.trainingdataprocessor.semantics.extraction.NounPredicateExtractorImpl"/>-->
+
+    <!--<bean id="semanticExtractor"-->
+    <!--class="com.trainingdataprocessor.semantics.extraction.SemanticExtractorImpl">-->
+    <!--<constructor-arg ref="subjectExtractor"/>-->
+    <!--<constructor-arg ref="verbPredicateExtractor"/>-->
+    <!--<constructor-arg ref="nounPredicateExtractor"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="nlpTrainingDataProcessor"-->
+    <!--class="com.trainingdataprocessor.main.NlpTrainingDataProcessor">-->
+    <!--<constructor-arg ref="trainingDataPreprocessor"/>-->
+    <!--<constructor-arg ref="tagsWriter"/>-->
+    <!--<constructor-arg ref="bigramsWriter"/>-->
+    <!--<constructor-arg ref="semanticsWriter"/>-->
+    <!--<constructor-arg ref="subPathsWriter"/>-->
+    <!--<constructor-arg ref="bigramDataListFactory"/>-->
+    <!--<constructor-arg ref="subPathDataListFactory"/>-->
+    <!--<constructor-arg ref="semanticPreprocessor"/>-->
+    <!--<constructor-arg ref="semanticExtractor"/>-->
+    <!--<constructor-arg ref="morphemesDetector"/>-->
+    <!--</bean>-->
+
+</beans>
