@@ -11,6 +11,8 @@ import com.semanticRelationsExtractor.factories.InputDataFactory;
 import com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessor;
 import com.semanticRelationsExtractor.preprocessing.SemanticPreprocessor;
 import com.semanticRelationsExtractor.reader.InputDataReader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 
@@ -41,17 +43,16 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
         this.inputDataReader = inputDataReader;
         this.inputDataFactory = inputDataFactory;
         this.capitalizedTokensPreprocessor = capitalizedTokensPreprocessor;
-//        this.posTagger = new PosTaggerImpl();
+        this.posTagger = new PosTaggerImpl();
         this.semanticPreprocessor = semanticPreprocessor;
         this.semanticRelationsExtractor = semanticRelationsExtractor;
         this.databaseInserter = databaseInserter;
     }
 
     public static void main(String[] args) throws InterruptedException {
-        PosTagger posTagger = new PosTaggerImpl();
-        posTagger.tag("the Serbian frontier in Macedonia was left practically unguarded");
-        posTagger.tag("David Beckham was football superstar");
-
+        ApplicationContext context = new ClassPathXmlApplicationContext("spring_beans.xml");
+        SemanticExtractionProcessor semanticExtractionProcessor = (SemanticExtractionProcessor) context.getBean("semanticExtractionProcessor");
+        semanticExtractionProcessor.process();
     }
 
 

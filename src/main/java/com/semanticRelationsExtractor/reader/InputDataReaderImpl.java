@@ -22,7 +22,7 @@ public class InputDataReaderImpl implements InputDataReader {
         List<String> inputDataAsStringList = new ArrayList<>();
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("c:\\Users\\Oliver\\Documents\\SemanticExtraction\\SemanticExtractionRawTextData.txt"));
+            br = new BufferedReader(new FileReader("c:\\Users\\Oliver\\Documents\\NlpTrainingData\\SemanticExtraction\\SemanticExtractionRawTextData.txt"));
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
         }
