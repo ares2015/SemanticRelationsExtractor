@@ -1,12 +1,12 @@
-package com.semanticRelationsExtractor.extraction;
+package com.semanticRelationsExtractor.extraction.subject;
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 
 /**
- * Created by Oliver on 2/17/2017.
+ * Created by Oliver on 2/16/2017.
  */
-public interface VerbPredicateExtractor {
+public interface SubjectExtractor {
 
     void extract(SemanticExtractionData semanticExtractionData, SemanticPreprocessingData semanticPreprocessingData);
 

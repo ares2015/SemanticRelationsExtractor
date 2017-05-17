@@ -1,4 +1,4 @@
-package com.semanticRelationsExtractor.factory;
+package com.semanticRelationsExtractor.factories;
 
 import com.semanticRelationsExtractor.data.InputData;
 

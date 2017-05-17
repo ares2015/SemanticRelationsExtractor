@@ -3,6 +3,9 @@ package com.semanticRelationsExtractor.extraction;
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
+import com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.subject.SubjectExtractor;
 
 /**
  * Created by Oliver on 2/17/2017.

@@ -3,34 +3,39 @@ package com.semanticRelationsExtractor.main;
 import com.semanticRelationsExtractor.data.InputData;
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
+import com.semanticRelationsExtractor.database.DatabaseInserter;
 import com.semanticRelationsExtractor.extraction.SemanticRelationsExtractor;
+import com.semanticRelationsExtractor.factories.InputDataListFactory;
 import com.semanticRelationsExtractor.preprocessing.SemanticPreprocessor;
+import com.semanticRelationsExtractor.reader.InputDataReader;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Oliver on 5/15/2017.
  */
 public class SemanticExtractionProcessorImpl implements SemanticExtractionProcessor {
 
+    private InputDataReader inputDataReader;
+
+    private InputDataListFactory inputDataListFactory;
+
     private SemanticPreprocessor semanticPreprocessor;
 
     private SemanticRelationsExtractor semanticRelationsExtractor;
 
-//    private SemanticsWriter semanticsWriter;
+    private DatabaseInserter databaseInserter;
 
-    private List<InputData> inputDataList;
-
-    private List<SemanticExtractionData> semanticExtractionDataList = new ArrayList<>();
-
-//    public SemanticExtractionProcessorImpl(SemanticPreprocessor semanticPreprocessor, SemanticRelationsExtractor semanticRelationsExtractor,
-//                                SemanticsWriter semanticsWriter, List<TrainingDataRow> trainingDataRowList) {
-//        this.semanticPreprocessor = semanticPreprocessor;
-//        this.semanticRelationsExtractor = semanticRelationsExtractor;
-//        this.semanticsWriter = semanticsWriter;
-//        this.trainingDataRowList = trainingDataRowList;
-//    }
+    public SemanticExtractionProcessorImpl(InputDataReader inputDataReader, InputDataListFactory inputDataListFactory,
+                                           SemanticPreprocessor semanticPreprocessor, SemanticRelationsExtractor semanticRelationsExtractor,
+                                           DatabaseInserter databaseInserter) {
+        this.inputDataReader = inputDataReader;
+        this.inputDataListFactory = inputDataListFactory;
+        this.semanticPreprocessor = semanticPreprocessor;
+        this.semanticRelationsExtractor = semanticRelationsExtractor;
+        this.databaseInserter = databaseInserter;
+    }
 
     public static void main(String[] args) throws InterruptedException {
 //        PosTagger posTagger = new PosTaggerImpl();
@@ -42,6 +47,8 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
     @Override
     public void process() {
+        List<String> inputDataStringList = inputDataReader.read();
+        List<InputData> inputDataList = inputDataListFactory.create(inputDataStringList);
         for (InputData inputData : inputDataList) {
             if (inputData.containsSubSentences()) {
                 for (int i = 0; i <= inputData.getTokensMultiList().size() - 1; i++) {
@@ -58,11 +65,12 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 //        semanticsWriter.write(semanticExtractionDataList);
     }
 
-    private void processSentence(List<String> tokensList, List<String> tagsList) {
+
+    private Optional<SemanticExtractionData> processSentence(List<String> tokensList, List<String> tagsList) {
         SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
         if (semanticPreprocessingData.canGoToExtraction()) {
-            SemanticExtractionData semanticExtractionData = semanticRelationsExtractor.extract(semanticPreprocessingData);
-            semanticExtractionDataList.add(semanticExtractionData);
+            return Optional.of(semanticRelationsExtractor.extract(semanticPreprocessingData));
         }
+        return Optional.empty();
     }
 }

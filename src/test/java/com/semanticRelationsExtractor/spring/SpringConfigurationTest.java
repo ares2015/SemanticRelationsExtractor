@@ -1,4 +1,4 @@
-package com.semanticRelationsExtractor;
+package com.semanticRelationsExtractor.spring;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

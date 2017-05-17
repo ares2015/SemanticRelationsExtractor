@@ -1,4 +1,4 @@
-package com.semanticRelationsExtractor.extraction;
+package com.semanticRelationsExtractor.extraction.subject;
 
 import com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache;
 import com.semanticRelationsExtractor.data.SemanticExtractionData;

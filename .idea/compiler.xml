@@ -25,8 +25,8 @@
         <module name="SemanticRelationsExtractor" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="SemanticRelationsExtractor" target="1.7" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="SemanticRelationsExtractor" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
