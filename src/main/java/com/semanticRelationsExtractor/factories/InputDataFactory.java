@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * Created by oled on 5/16/2017.
  */
-public interface InputDataListFactory {
+public interface InputDataFactory {
 
-    List<InputData> create(List<String> inputDataAsStringList);
+    InputData create(String sentence, List<String> tags);
 
 }

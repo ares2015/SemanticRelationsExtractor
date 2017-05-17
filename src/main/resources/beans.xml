@@ -12,83 +12,55 @@
         <property name="password" value="glavoika"/>
     </bean>
 
-    <!--<bean id="morphemesDetector" class="com.trainingdataprocessor.morphology.MorphemesDetectorImpl"/>-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
 
-    <!--<bean id="tagsWriter" class="com.trainingdataprocessor.writer.tags.TagsWriterImpl"/>-->
+    <bean id="databaseInserter" class="com.semanticRelationsExtractor.database.DatabaseInserterImpl">
+        <constructor-arg ref="jdbcTemplate"/>
+    </bean>
 
-    <!--<bean id="bigramsWriter" class="com.trainingdataprocessor.writer.bigrams.BigramsWriterImpl"/>-->
+    <bean id="tokenizer" class="com.semanticRelationsExtractor.tokens.TokenizerImpl"/>
 
-    <!--<bean id="subPathsWriter" class="com.trainingdataprocessor.writer.subpaths.SubPathsWriterImpl"/>-->
+    <bean id="multiListFactory" class="com.semanticRelationsExtractor.factories.MultiListFactoryImpl"/>
 
-    <!--<bean id="semanticsWriter" class="com.trainingdataprocessor.writer.semantics.SemanticsWriterImpl"/>-->
+    <bean id="inputDataFactory"
+          class="com.semanticRelationsExtractor.factories.InputDataFactoryImpl">
+        <constructor-arg ref="tokenizer"/>
+        <constructor-arg ref="multiListFactory"/>
+    </bean>
 
-    <!--<bean id="tokenizer" class="com.trainingdataprocessor.tokens.TokenizerImpl"/>-->
+    <bean id="inputDataReader" class="com.semanticRelationsExtractor.reader.InputDataReaderImpl"/>
 
-    <!--<bean id="tagsEncoder" class="com.trainingdataprocessor.encoding.TagsEncoderImpl"/>-->
+    <bean id="capitalizedTokensPreprocessor"
+          class="com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessorImpl"/>
 
-    <!--<bean id="listComparator" class="com.trainingdataprocessor.validator.ListComparatorImpl"/>-->
+    <bean id="semanticPreprocessor" class="com.semanticRelationsExtractor.preprocessing.SemanticPreprocessorImpl"/>
 
-    <!--<bean id="bigramDataListFactory" class="com.trainingdataprocessor.factories.bigram.BigramDataListFactoryImpl"/>-->
+    <bean id="subjectExtractor" class="com.semanticRelationsExtractor.extraction.subject.SubjectExtractorImpl"/>
 
-    <!--<bean id="multiListFactory" class="com.trainingdataprocessor.factories.multilist.MultiListFactoryImpl"/>-->
+    <bean id="verbPredicateExtractor"
+          class="com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractorImpl"/>
 
-    <!--<bean id="subPathDataListFactory"-->
-    <!--class="com.trainingdataprocessor.factories.subpath.SubPathDataListFactoryImpl"/>-->
+    <bean id="nounPredicateExtractor"
+          class="com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractorImpl"/>
 
-    <!--<bean id="trainingDataRowListFactory"-->
-    <!--class="com.trainingdataprocessor.factories.row.TrainingDataRowListFactoryImpl">-->
-    <!--<constructor-arg ref="tokenizer"/>-->
-    <!--<constructor-arg ref="tagsEncoder"/>-->
-    <!--<constructor-arg ref="multiListFactory"/>-->
-    <!--</bean>-->
+    <bean id="semanticRelationsExtractor"
+          class="com.semanticRelationsExtractor.extraction.SemanticRelationsExtractorImpl">
+        <constructor-arg ref="subjectExtractor"/>
+        <constructor-arg ref="verbPredicateExtractor"/>
+        <constructor-arg ref="nounPredicateExtractor"/>
+    </bean>
 
-    <!--<bean id="trainingDataValidator" class="com.trainingdataprocessor.validator.TrainingDataValidatorImpl">-->
-    <!--<constructor-arg ref="tokenizer"/>-->
-    <!--<constructor-arg ref="listComparator"/>-->
-    <!--</bean>-->
+    <bean id="semanticExtractionProcessor"
+          class="com.semanticRelationsExtractor.main.SemanticExtractionProcessorImpl">
+        <constructor-arg ref="inputDataReader"/>
+        <constructor-arg ref="inputDataFactory"/>
+        <constructor-arg ref="capitalizedTokensPreprocessor"/>
+        <constructor-arg ref="semanticPreprocessor"/>
+        <constructor-arg ref="semanticRelationsExtractor"/>
+        <constructor-arg ref="databaseInserter"/>
+    </bean>
 
-    <!--<bean id="trainingDataReader" class="com.trainingdataprocessor.reader.TrainingDataFileReaderImpl">-->
-    <!--<constructor-arg ref="trainingDataValidator"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="capitalizedTokensProcessor"-->
-    <!--class="com.trainingdataprocessor.preprocessing.CapitalizedTokensProcessorImpl"/>-->
-
-    <!--<bean id="trainingDataPreprocessor" class="com.trainingdataprocessor.preprocessing.TrainingDataPreprocessorImpl">-->
-    <!--<constructor-arg ref="trainingDataReader"/>-->
-    <!--<constructor-arg ref="trainingDataRowListFactory"/>-->
-    <!--<constructor-arg ref="capitalizedTokensProcessor"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="semanticPreprocessor" class="com.trainingdataprocessor.semantics.preprocessing.SemanticPreprocessorImpl"/>-->
-
-    <!--<bean id="subjectExtractor" class="com.trainingdataprocessor.semantics.extraction.SubjectExtractorImpl"/>-->
-
-    <!--<bean id="verbPredicateExtractor"-->
-    <!--class="com.trainingdataprocessor.semantics.extraction.VerbPredicateExtractorImpl"/>-->
-
-    <!--<bean id="nounPredicateExtractor"-->
-    <!--class="com.trainingdataprocessor.semantics.extraction.NounPredicateExtractorImpl"/>-->
-
-    <!--<bean id="semanticExtractor"-->
-    <!--class="com.trainingdataprocessor.semantics.extraction.SemanticExtractorImpl">-->
-    <!--<constructor-arg ref="subjectExtractor"/>-->
-    <!--<constructor-arg ref="verbPredicateExtractor"/>-->
-    <!--<constructor-arg ref="nounPredicateExtractor"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="nlpTrainingDataProcessor"-->
-    <!--class="com.trainingdataprocessor.main.NlpTrainingDataProcessor">-->
-    <!--<constructor-arg ref="trainingDataPreprocessor"/>-->
-    <!--<constructor-arg ref="tagsWriter"/>-->
-    <!--<constructor-arg ref="bigramsWriter"/>-->
-    <!--<constructor-arg ref="semanticsWriter"/>-->
-    <!--<constructor-arg ref="subPathsWriter"/>-->
-    <!--<constructor-arg ref="bigramDataListFactory"/>-->
-    <!--<constructor-arg ref="subPathDataListFactory"/>-->
-    <!--<constructor-arg ref="semanticPreprocessor"/>-->
-    <!--<constructor-arg ref="semanticExtractor"/>-->
-    <!--<constructor-arg ref="morphemesDetector"/>-->
-    <!--</bean>-->
 
 </beans>

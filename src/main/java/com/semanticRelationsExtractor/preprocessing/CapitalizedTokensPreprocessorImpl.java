@@ -23,8 +23,7 @@ public class CapitalizedTokensPreprocessorImpl implements CapitalizedTokensPrepr
                 List<String> processedTokensList = new ArrayList<>();
                 List<String> processedTagsList = new ArrayList<>();
                 List<String> processedEncodedTagsList = new ArrayList<>();
-                runCapitalizationLogic(tokensList, tagsList, processedTokensList, processedTagsList,
-                        processedEncodedTagsList, inputData, containsSubSentences, i);
+                runCapitalizationLogic(tokensList, tagsList, processedTokensList, processedTagsList, inputData, containsSubSentences, i);
             }
         } else {
             List<String> tokensList = inputData.getTokensList();
@@ -32,15 +31,12 @@ public class CapitalizedTokensPreprocessorImpl implements CapitalizedTokensPrepr
 
             List<String> processedTokensList = new ArrayList<>();
             List<String> processedTagsList = new ArrayList<>();
-            List<String> processedEncodedTagsList = new ArrayList<>();
-            runCapitalizationLogic(tokensList, tagsList, processedTokensList, processedTagsList,
-                    processedEncodedTagsList, inputData, containsSubSentences, -1);
+            runCapitalizationLogic(tokensList, tagsList, processedTokensList, processedTagsList, inputData, containsSubSentences, -1);
         }
     }
 
     private void runCapitalizationLogic(List<String> tokensList, List<String> tagsList, List<String> processedTokensList,
-                                        List<String> processedTagsList, List<String> processedEncodedTagsList,
-                                        InputData inputData, boolean containsSubSentence, int listIndex) {
+                                        List<String> processedTagsList, InputData inputData, boolean containsSubSentence, int listIndex) {
         String mergedToken = "";
 
         outer:

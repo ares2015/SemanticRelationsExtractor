@@ -5,6 +5,6 @@ package com.semanticRelationsExtractor.main;
  */
 public interface SemanticExtractionProcessor {
 
-    void process();
+    void process() throws InterruptedException;
 
 }
