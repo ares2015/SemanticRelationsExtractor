@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface InputDataFactory {
 
-    InputData create(String sentence, List<String> tags);
+    InputData create(String sentence, List<List<String>> tagSequencesMultiList);
 
 }

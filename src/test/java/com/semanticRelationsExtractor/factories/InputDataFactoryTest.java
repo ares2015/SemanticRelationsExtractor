@@ -26,14 +26,16 @@ public class InputDataFactoryTest {
     @Test
     public void testCreate() {
         String sentence = "boys drink beer in pub";
+        List<List<String>> tagSequencesMultiList = new ArrayList<>();
         List<String> tagsList = new ArrayList<>();
+        tagSequencesMultiList.add(tagsList);
         tagsList.add(Tags.NOUN);
         tagsList.add(Tags.VERB);
         tagsList.add(Tags.NOUN);
         tagsList.add(Tags.PREPOSITION);
         tagsList.add(Tags.NOUN);
 
-        InputData inputData = inputDataFactory.create(sentence, tagsList);
+        InputData inputData = inputDataFactory.create(sentence, tagSequencesMultiList);
 
         assertFalse(inputData.containsSubSentences());
         assertEquals(5, inputData.getTokensList().size());

@@ -60,8 +60,8 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
     public void process() throws InterruptedException {
         List<String> inputDataStringList = inputDataReader.read();
         for (String inputDataAsString : inputDataStringList) {
-            List<List<String>> tags = posTagger.tag(inputDataAsString);
-            InputData inputData = inputDataFactory.create(inputDataAsString, tags.get(0));
+            List<List<String>> tagSequencesMultiList = posTagger.tag(inputDataAsString);
+            InputData inputData = inputDataFactory.create(inputDataAsString, tagSequencesMultiList);
             capitalizedTokensPreprocessor.process(inputData);
             if (inputData.containsSubSentences()) {
                 for (int i = 0; i <= inputData.getTokensMultiList().size() - 1; i++) {
