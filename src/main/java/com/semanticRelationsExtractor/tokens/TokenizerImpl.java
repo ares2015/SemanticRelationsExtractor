@@ -1,6 +1,7 @@
 package com.semanticRelationsExtractor.tokens;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,31 +14,12 @@ public class TokenizerImpl implements Tokenizer {
         String[] tokTmp;
         tokTmp = sentence.split("\\ ");
         final List<String> tokens = removeEmptyStringInSentence(tokTmp);
-        return tokens;
-    }
-
-    @Override
-    public List<String> splitStringWithoutEmptySpaceToList(String token) {
-        List<String> list = new ArrayList<>();
-        char[] chars = token.toCharArray();
-        for (char c : chars) {
-            String s = String.valueOf(c);
-            list.add(s);
+        List<String> filteredTokens = new ArrayList<>();
+        for (String token : tokens) {
+            token = removeEmptyCharsFromToken(token);
+            filteredTokens.add(token);
         }
-        return list;
-    }
-
-    @Override
-    public List<Integer> getCommaIndexes(final List<String> tokens) {
-        final List<Integer> commaIndexes = new ArrayList<Integer>();
-        int index = 0;
-        for (final String token : tokens) {
-            if (token.endsWith(",")) {
-                commaIndexes.add(index);
-            }
-            index++;
-        }
-        return commaIndexes;
+        return filteredTokens;
     }
 
     /**
@@ -60,45 +42,6 @@ public class TokenizerImpl implements Tokenizer {
         return tokenWithoutComma;
     }
 
-    @Override
-    public String convertListToString(List<String> list) {
-        String newString = "";
-        int i = 0;
-        for (String word : list) {
-            if (i < list.size() - 1) {
-                newString += word + " ";
-            } else {
-                newString += word;
-            }
-            i++;
-        }
-        return newString;
-    }
-
-    @Override
-    public String convertEncodedTagsListToString(List<String> list) {
-        String encodedPath = "";
-        int i = 0;
-        for (String word : list) {
-            encodedPath += word;
-            i++;
-        }
-        return encodedPath;
-    }
-
-    @Override
-    public String convertSubListToString(List<String> list, int startIndex, int endIndex) {
-        String s = "";
-        for (int i = startIndex; i <= endIndex - 1; i++) {
-            if (i < endIndex) {
-                s += list.get(i) + " ";
-            } else {
-                s += list.get(i);
-            }
-        }
-        return s;
-    }
-
     /**
      * Removes empty String that is located in sentences with index > 0
      * that is created by empty space behind each sentence (space between
@@ -117,5 +60,17 @@ public class TokenizerImpl implements Tokenizer {
             }
         }
         return listTokens;
+    }
+
+    private String removeEmptyCharsFromToken(String token) {
+        char[] charTmp;
+        charTmp = token.toCharArray();
+        int numberOfEmptyChars = 0;
+        for (int i = 0; i <= charTmp.length - 1; i++) {
+            if (charTmp[i] == '\uFEFF') {
+                numberOfEmptyChars++;
+            }
+        }
+        return new String(Arrays.copyOfRange(charTmp, numberOfEmptyChars, charTmp.length));
     }
 }
