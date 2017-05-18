@@ -5,11 +5,14 @@ import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Oliver on 2/17/2017.
  */
 public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
+
+    private final static Logger LOGGER = Logger.getLogger(VerbPredicateExtractorImpl.class.getName());
 
     @Override
     public void extract(SemanticExtractionData semanticExtractionData, SemanticPreprocessingData semanticPreprocessingData) {
@@ -17,10 +20,13 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
         List<String> tagsList = semanticPreprocessingData.getTagsList();
         int verbIndex = semanticPreprocessingData.getVerbIndex();
         int modalVerbIndex = semanticPreprocessingData.getModalVerbIndex();
-        semanticExtractionData.setAtomicVerbPredicate(tokensList.get(verbIndex));
+        String atomicVerbPredicate = tokensList.get(verbIndex);
+        semanticExtractionData.setAtomicVerbPredicate(atomicVerbPredicate);
+        LOGGER.info("Atomic verb predicate: " + atomicVerbPredicate);
         if (modalVerbIndex > -1) {
             String extendedVerbPredicate = extractAtomicVerbPredicate(tokensList, tagsList, modalVerbIndex);
             semanticExtractionData.setExtendedVerbPredicate(extendedVerbPredicate);
+            LOGGER.info("Extended verb predicate: " + extendedVerbPredicate);
         }
     }
 

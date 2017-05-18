@@ -1,6 +1,5 @@
 package com.semanticRelationsExtractor.factories;
 
-import com.postagger.tags.Tags;
 import com.semanticRelationsExtractor.data.InputData;
 import com.semanticRelationsExtractor.tokens.Tokenizer;
 import com.semanticRelationsExtractor.tokens.TokenizerImpl;
@@ -27,13 +26,9 @@ public class InputDataFactoryTest {
     public void testCreate() {
         String sentence = "boys drink beer in pub";
         List<List<String>> tagSequencesMultiList = new ArrayList<>();
-        List<String> tagsList = new ArrayList<>();
-        tagSequencesMultiList.add(tagsList);
-        tagsList.add(Tags.NOUN);
-        tagsList.add(Tags.VERB);
-        tagsList.add(Tags.NOUN);
-        tagsList.add(Tags.PREPOSITION);
-        tagsList.add(Tags.NOUN);
+        List<String> tagsSequenceList = new ArrayList<>();
+        tagSequencesMultiList.add(tagsSequenceList);
+        tagsSequenceList.add(new String("N V N PR N"));
 
         InputData inputData = inputDataFactory.create(sentence, tagSequencesMultiList);
 
@@ -55,45 +50,50 @@ public class InputDataFactoryTest {
 
     }
 
-//    @Test
-//    public void testCreateWithSubSentences() {
-//        String inputDataString = "john, harry, mike and bob drink beer in pub#N, N, N AO N V N PR N";
-//        String sentence = "john, harry, mike and bob drink beer in pub";
-//        List<String> tagsList = new ArrayList<>();
-//        tagsList.add(Tags.NOUN);
-//        tagsList.add(Tags.NOUN);
-//
-//        List<InputData> inputDataList = inputDataFactory.create(inputDataStringList);
-//
-//        assertEquals(1, inputDataList.size());
-//        InputData inputData = inputDataList.get(0);
-//
-//        assertEquals(9, inputData.getTokensList().size());
-//        assertEquals(9, inputData.getTagsList().size());
-//
-//        List<List<String>> tokensMultiList = inputData.getTokensMultiList();
-//        assertEquals(3, tokensMultiList.size());
-//        assertEquals("john", tokensMultiList.get(0).get(0));
-//        assertEquals("harry", tokensMultiList.get(1).get(0));
-//        assertEquals("mike", tokensMultiList.get(2).get(0));
-//        assertEquals("and", tokensMultiList.get(2).get(1));
-//        assertEquals("bob", tokensMultiList.get(2).get(2));
-//        assertEquals("drink", tokensMultiList.get(2).get(3));
-//        assertEquals("beer", tokensMultiList.get(2).get(4));
-//        assertEquals("in", tokensMultiList.get(2).get(5));
-//        assertEquals("pub", tokensMultiList.get(2).get(6));
-//
-//        List<List<String>> tagsMultiList = inputData.getTagsMultiList();
-//        assertEquals(3, tagsMultiList.size());
-//        assertEquals("N", tagsMultiList.get(0).get(0));
-//        assertEquals("N", tagsMultiList.get(1).get(0));
-//        assertEquals("N", tagsMultiList.get(2).get(0));
-//        assertEquals("AO", tagsMultiList.get(2).get(1));
-//        assertEquals("N", tagsMultiList.get(2).get(2));
-//        assertEquals("V", tagsMultiList.get(2).get(3));
-//        assertEquals("N", tagsMultiList.get(2).get(4));
-//        assertEquals("PR", tagsMultiList.get(2).get(5));
-//        assertEquals("N", tagsMultiList.get(2).get(6));
-//
-//    }
+    @Test
+    public void testCreateWithSubSentences() {
+        String inputDataString = "john, harry, mike and bob drink beer in pub#N, N, N AO N V N PR N";
+        String sentence = "john, harry, mike and bob drink beer in pub";
+        List<List<String>> tagSequencesMultiList = new ArrayList<>();
+
+        List<String> tagsSequenceList1 = new ArrayList<>();
+        tagsSequenceList1.add(new String("N"));
+
+        List<String> tagsSequenceList2 = new ArrayList<>();
+        tagsSequenceList2.add(new String("N"));
+
+        List<String> tagsSequenceList3 = new ArrayList<>();
+        tagsSequenceList3.add(new String("N AO N V N PR N"));
+
+        tagSequencesMultiList.add(tagsSequenceList1);
+        tagSequencesMultiList.add(tagsSequenceList2);
+        tagSequencesMultiList.add(tagsSequenceList3);
+
+        InputData inputData = inputDataFactory.create(sentence, tagSequencesMultiList);
+
+        List<List<String>> tokensMultiList = inputData.getTokensMultiList();
+        assertEquals(3, tokensMultiList.size());
+        assertEquals("john", tokensMultiList.get(0).get(0));
+        assertEquals("harry", tokensMultiList.get(1).get(0));
+        assertEquals("mike", tokensMultiList.get(2).get(0));
+        assertEquals("and", tokensMultiList.get(2).get(1));
+        assertEquals("bob", tokensMultiList.get(2).get(2));
+        assertEquals("drink", tokensMultiList.get(2).get(3));
+        assertEquals("beer", tokensMultiList.get(2).get(4));
+        assertEquals("in", tokensMultiList.get(2).get(5));
+        assertEquals("pub", tokensMultiList.get(2).get(6));
+
+        List<List<String>> tagsMultiList = inputData.getTagsMultiList();
+        assertEquals(3, tagsMultiList.size());
+        assertEquals("N", tagsMultiList.get(0).get(0));
+        assertEquals("N", tagsMultiList.get(1).get(0));
+        assertEquals("N", tagsMultiList.get(2).get(0));
+        assertEquals("AO", tagsMultiList.get(2).get(1));
+        assertEquals("N", tagsMultiList.get(2).get(2));
+        assertEquals("V", tagsMultiList.get(2).get(3));
+        assertEquals("N", tagsMultiList.get(2).get(4));
+        assertEquals("PR", tagsMultiList.get(2).get(5));
+        assertEquals("N", tagsMultiList.get(2).get(6));
+
+    }
 }

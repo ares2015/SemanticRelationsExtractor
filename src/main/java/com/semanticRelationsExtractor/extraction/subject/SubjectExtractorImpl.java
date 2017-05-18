@@ -6,11 +6,14 @@ import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Oliver on 2/16/2017.
  */
 public class SubjectExtractorImpl implements SubjectExtractor {
+
+    private final static Logger LOGGER = Logger.getLogger(SubjectExtractorImpl.class.getName());
 
     @Override
     public void extract(SemanticExtractionData semanticExtractionData, SemanticPreprocessingData semanticPreprocessingData) {
@@ -20,10 +23,12 @@ public class SubjectExtractorImpl implements SubjectExtractor {
         if (!semanticPreprocessingData.containsBeforeVerbPreposition()) {
             String atomicSubject = extractAtomicSubject(tokensList, tagsList, verbIndex);
             semanticExtractionData.setAtomicSubject(atomicSubject);
+            LOGGER.info("Atomic subject: " + atomicSubject);
         }
         if (verbIndex > 1) {
             String extendedSubject = extractExtendedSubject(tokensList, tagsList);
             semanticExtractionData.setExtendedSubject(extendedSubject);
+            LOGGER.info("Extended subject: " + extendedSubject);
         }
     }
 

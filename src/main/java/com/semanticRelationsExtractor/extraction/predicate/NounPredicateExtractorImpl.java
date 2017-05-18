@@ -6,11 +6,14 @@ import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by Oliver on 2/16/2017.
  */
 public class NounPredicateExtractorImpl implements NounPredicateExtractor {
+
+    private final static Logger LOGGER = Logger.getLogger(NounPredicateExtractorImpl.class.getName());
 
     @Override
     public void extract(SemanticExtractionData semanticExtractionData, SemanticPreprocessingData semanticPreprocessingData) {
@@ -21,9 +24,11 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
         if (!semanticPreprocessingData.containsAfterVerbVerbIng()) {
             String atomicNounPredicate = extractAtomicNounPredicate(tokensList, tagsList, verbIndex, afterVerbPrepositionIndex);
             semanticExtractionData.setAtomicNounPredicate(atomicNounPredicate);
+            LOGGER.info("Atomic noun predicate: " + atomicNounPredicate);
         }
         String extendedNounPredicate = extractExtendedNounPredicate(tokensList, tagsList, verbIndex);
         semanticExtractionData.setExtendedNounPredicate(extendedNounPredicate);
+        LOGGER.info("Extended noun predicate: " + extendedNounPredicate);
     }
 
     private String extractAtomicNounPredicate(List<String> tokensList, List<String> encodedTagsList,
