@@ -16,7 +16,7 @@ public class InputData {
 
     private List<List<String>> tokensMultiList;
 
-    private List<List<String>> tagsMultiList;
+    private List<List<String>> tagsMultiList = new ArrayList<>();
 
     public boolean containsSubSentences() {
         return containsSubSentences;
@@ -54,7 +54,4 @@ public class InputData {
         return tagsMultiList;
     }
 
-    public void setTagsMultiList(List<List<String>> tagsMultiList) {
-        this.tagsMultiList = tagsMultiList;
-    }
 }
