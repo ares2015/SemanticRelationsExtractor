@@ -93,7 +93,7 @@ public class SemanticExtractionIntegrationTest {
 
     @Test
     public void test5() {
-        String sentence = "The sorrow of all living things at his death means the gloom of northern countries when winter comes";
+        String sentence = "The sorrow of all living things at his death meant the gloom of northern countries when winter comes";
         List<String> tokensList = Arrays.asList(sentence.split("\\ "));
         String tags = "DET N PR Q Ving N PR PRPS N V DET N PR AJ N WAV N V";
         List<String> tagsList = Arrays.asList(tags.split("\\ "));
@@ -101,7 +101,7 @@ public class SemanticExtractionIntegrationTest {
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("", semanticExtractionData.getAtomicSubject());
         assertEquals("sorrow of all living things at death ", semanticExtractionData.getExtendedSubject());
-        assertEquals("means", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("meant", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("gloom", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("gloom of northern countries ", semanticExtractionData.getExtendedNounPredicate());
     }
@@ -116,8 +116,8 @@ public class SemanticExtractionIntegrationTest {
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("earth", semanticExtractionData.getAtomicSubject());
         assertEquals("earth ", semanticExtractionData.getExtendedSubject());
-        assertEquals("be", semanticExtractionData.getAtomicVerbPredicate());
-        assertEquals("will be ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("will be shaken ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("will be shaken ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("shaken ", semanticExtractionData.getExtendedNounPredicate());
     }

@@ -45,6 +45,6 @@ public class VerbPredicateExtractorTest {
         semanticPreprocessingData.setModalVerbIndex(1);
         verbPredicateExtractor.extract(semanticExtractionData, semanticPreprocessingData);
         assertEquals("can run very quickly ", semanticExtractionData.getExtendedVerbPredicate());
-        assertEquals("run", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("can run very quickly ", semanticExtractionData.getAtomicVerbPredicate());
     }
 }

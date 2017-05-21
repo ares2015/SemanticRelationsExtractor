@@ -88,7 +88,7 @@ public class SemanticRelationsExtractorTest {
         semanticPreprocessingData.setModalVerbIndex(3);
         SemanticExtractionData semanticExtractionData = semanticRelationsExtractor.extract(semanticPreprocessingData);
         assertEquals("Members of Fragile ", semanticExtractionData.getExtendedSubject());
-        assertEquals("sing", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("can sing absolutely perfectly ", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("can sing absolutely perfectly ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("absolutely perfectly before audience ", semanticExtractionData.getExtendedNounPredicate());
         assertEquals("", semanticExtractionData.getAtomicNounPredicate());
