@@ -15,7 +15,9 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
     @Override
     public SemanticPreprocessingData preprocess(List<String> tokens, List<String> tags) {
         SemanticPreprocessingData semanticPreprocessingData = new SemanticPreprocessingData();
+        int mainVerbIndex = -1;
         int modalVerbIndex = -1;
+        int haveBeenSequenceStartIndex = -1;
         boolean containsBeforeVerbPreposition = false;
         int afterVerbFirstPrepositionIndex = -1;
         boolean containsAfterVerbVerbIng = false;
@@ -27,11 +29,17 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         List<String> filteredTags = filteredSentence.getFilteredTags();
         List<String> filteredTokens = filteredSentence.getFilteredTokens();
 
-        int mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
-        if (mainVerbIndex == -1) {
-            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
+        haveBeenSequenceStartIndex = findHaveBeenSequenceStartIndex(filteredTags);
+        if (haveBeenSequenceStartIndex == -1) {
+            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
             if (mainVerbIndex == -1) {
-                return semanticPreprocessingData;
+                mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
+                if (mainVerbIndex == -1) {
+                    mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
+                    if (mainVerbIndex == -1) {
+                        return semanticPreprocessingData;
+                    }
+                }
             }
         }
 
@@ -68,6 +76,7 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             semanticPreprocessingData.setTagsList(filteredTags);
             semanticPreprocessingData.setTokensList(filteredTokens);
             semanticPreprocessingData.setContainsBeforeVerbPreposition(containsBeforeVerbPreposition);
+            semanticPreprocessingData.setHaveBeenSequenceStartIndex(haveBeenSequenceStartIndex);
             semanticPreprocessingData.setVerbIndex(mainVerbIndex);
             semanticPreprocessingData.setModalVerbIndex(modalVerbIndex);
             semanticPreprocessingData.setAfterVerbFirstPrepositionIndex(afterVerbFirstPrepositionIndex);
@@ -93,6 +102,19 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             }
         }
         return new FilteredSentence(filteredTags, filteredTokens);
+    }
+
+    private int findHaveBeenSequenceStartIndex(List<String> tags) {
+        int haveBeenStartIndex = -1;
+        for (int i = 0; i < tags.size() - 1; i++) {
+            String tag1 = tags.get(i);
+            String tag2 = tags.get(i + 1);
+            if (Tags.HAVE.equals(tag1) && Tags.IS_ARE.equals(tag2)) {
+                haveBeenStartIndex = i;
+                break;
+            }
+        }
+        return haveBeenStartIndex;
     }
 
     private int findMainVerbIndex(List<String> tags, String verbTag) {

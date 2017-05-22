@@ -17,6 +17,8 @@ public final class SemanticPreprocessingData {
 
     private int modalVerbIndex = -1;
 
+    private int haveBeenSequenceStartIndex = -1;
+
     private boolean containsBeforeVerbPreposition = false;
 
     private int afterVerbFirstPrepositionIndex = -1;
@@ -63,6 +65,14 @@ public final class SemanticPreprocessingData {
 
     public void setModalVerbIndex(int modalVerbIndex) {
         this.modalVerbIndex = modalVerbIndex;
+    }
+
+    public int getHaveBeenSequenceStartIndex() {
+        return haveBeenSequenceStartIndex;
+    }
+
+    public void setHaveBeenSequenceStartIndex(int haveBeenSequenceStartIndex) {
+        this.haveBeenSequenceStartIndex = haveBeenSequenceStartIndex;
     }
 
     public boolean containsBeforeVerbPreposition() {
