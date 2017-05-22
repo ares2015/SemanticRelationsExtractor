@@ -49,7 +49,7 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             if (Tags.MODAL_VERB.equals(tag)) {
                 modalVerbIndex = i;
             }
-            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && (i > mainVerbIndex || i > haveBeenSequenceStartIndex)) {
+            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && (i > mainVerbIndex /*|| i > haveBeenSequenceStartIndex*/)) {
                 afterVerbFirstPrepositionIndex = i;
             }
             if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex)) {

@@ -102,7 +102,7 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("", semanticExtractionData.getAtomicSubject());
         assertEquals("sorrow of all living things at death ", semanticExtractionData.getExtendedSubject());
         assertEquals("meant", semanticExtractionData.getAtomicVerbPredicate());
-        assertEquals("", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("gloom", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("gloom of northern countries ", semanticExtractionData.getExtendedNounPredicate());
     }
 
