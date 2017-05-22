@@ -102,7 +102,7 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("", semanticExtractionData.getAtomicSubject());
         assertEquals("sorrow of all living things at death ", semanticExtractionData.getExtendedSubject());
         assertEquals("meant", semanticExtractionData.getAtomicVerbPredicate());
-        assertEquals("gloom", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("gloom of northern countries ", semanticExtractionData.getExtendedNounPredicate());
     }
 
@@ -118,6 +118,22 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("earth ", semanticExtractionData.getExtendedSubject());
         assertEquals("will be shaken ", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("will be shaken ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("shaken ", semanticExtractionData.getExtendedNounPredicate());
+    }
+
+    @Test
+    public void test7() {
+        String sentence = "The earth has been shaken as when there was a great earthquake the waves of the sea will roar and the highest mountains will totter and fall";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "DET N H IA Ved PR WAV T IA DET AJ N DET N PR DET N MV N AO DET AJ N MV V AO V";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("earth", semanticExtractionData.getAtomicSubject());
+        assertEquals("earth ", semanticExtractionData.getExtendedSubject());
+        assertEquals("has been", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("has been shaken ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("shaken ", semanticExtractionData.getExtendedNounPredicate());
     }

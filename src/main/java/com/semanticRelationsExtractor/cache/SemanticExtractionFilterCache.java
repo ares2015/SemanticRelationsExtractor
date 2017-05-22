@@ -22,6 +22,7 @@ public final class SemanticExtractionFilterCache {
         semanticExtractionAllowedTags.add(Tags.DETERMINER);
         semanticExtractionAllowedTags.add(Tags.CONJUNCTION);
         semanticExtractionAllowedTags.add(Tags.IS_ARE);
+        semanticExtractionAllowedTags.add(Tags.HAVE);
         semanticExtractionAllowedTags.add(Tags.MODAL_VERB);
         semanticExtractionAllowedTags.add(Tags.NOUN);
         semanticExtractionAllowedTags.add(Tags.NUMBER);

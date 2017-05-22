@@ -47,4 +47,51 @@ public class VerbPredicateExtractorTest {
         assertEquals("can run very quickly ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("can run very quickly ", semanticExtractionData.getAtomicVerbPredicate());
     }
+
+    @Test
+    public void testHaveBeenSequence() {
+        List<String> tags = new ArrayList<>();
+
+        tags.add(Tags.NOUN);
+        tags.add(Tags.HAVE);
+        tags.add(Tags.IS_ARE);
+        tags.add(Tags.VERB_ED);
+        tags.add(Tags.ADVERB);
+        tags.add(Tags.ADVERB);
+
+        String sentence = "Jagr has been injured very badly";
+        List<String> tokens = Arrays.asList(sentence.split("\\ "));
+        SemanticExtractionData semanticExtractionData = new SemanticExtractionData();
+        SemanticPreprocessingData semanticPreprocessingData = new SemanticPreprocessingData();
+        semanticPreprocessingData.setTokensList(tokens);
+        semanticPreprocessingData.setTagsList(tags);
+        semanticPreprocessingData.setHaveBeenSequenceStartIndex(1);
+        semanticPreprocessingData.setVerbIndex(1);
+        verbPredicateExtractor.extract(semanticExtractionData, semanticPreprocessingData);
+        assertEquals("has been injured very badly ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("has been", semanticExtractionData.getAtomicVerbPredicate());
+    }
+
+    @Test
+    public void testHaveVerbEd() {
+        List<String> tags = new ArrayList<>();
+
+        tags.add(Tags.NOUN);
+        tags.add(Tags.HAVE);
+        tags.add(Tags.VERB_ED);
+        tags.add(Tags.ADVERB);
+        tags.add(Tags.ADVERB);
+
+        String sentence = "Jagr has played very badly";
+        List<String> tokens = Arrays.asList(sentence.split("\\ "));
+        SemanticExtractionData semanticExtractionData = new SemanticExtractionData();
+        SemanticPreprocessingData semanticPreprocessingData = new SemanticPreprocessingData();
+        semanticPreprocessingData.setTokensList(tokens);
+        semanticPreprocessingData.setTagsList(tags);
+        semanticPreprocessingData.setHaveBeenSequenceStartIndex(1);
+        semanticPreprocessingData.setVerbIndex(1);
+        verbPredicateExtractor.extract(semanticExtractionData, semanticPreprocessingData);
+        assertEquals("has played very badly ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("has played", semanticExtractionData.getAtomicVerbPredicate());
+    }
 }

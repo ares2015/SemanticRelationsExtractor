@@ -30,7 +30,7 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         List<String> filteredTokens = filteredSentence.getFilteredTokens();
 
         haveBeenSequenceStartIndex = findHaveBeenSequenceStartIndex(filteredTags);
-        if (haveBeenSequenceStartIndex == -1) {
+//        if (haveBeenSequenceStartIndex == -1) {
             mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
             if (mainVerbIndex == -1) {
                 mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
@@ -41,7 +41,7 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
                     }
                 }
             }
-        }
+//        }
 
         for (int i = 0; i < filteredTags.size(); i++) {
             String tag = filteredTags.get(i);
@@ -49,32 +49,34 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             if (Tags.MODAL_VERB.equals(tag)) {
                 modalVerbIndex = i;
             }
-            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && i > mainVerbIndex) {
+            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && (i > mainVerbIndex || i > haveBeenSequenceStartIndex)) {
                 afterVerbFirstPrepositionIndex = i;
             }
-            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && i < mainVerbIndex) {
+            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex)) {
                 containsBeforeVerbPreposition = true;
             }
             if (Tags.VERB_ING.equals(tag) && mainVerbIndex < i) {
                 containsAfterVerbVerbIng = true;
             }
-            if ((Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag)) && i < mainVerbIndex) {
+            if ((Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex)) {
                 containsSubject = true;
             }
-            if (mainVerbIndex > -1 && i > mainVerbIndex && ((Tags.NOUN.equals(tag) || Tags.ADJECTIVE.equals(tag)) || Tags.VERB_ED.equals(tag) ||
-                    Tags.VERB_ING.equals(tag))) {
+            if ((mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex || haveBeenSequenceStartIndex > i) &&
+                    ((Tags.NOUN.equals(tag) || Tags.ADJECTIVE.equals(tag)) || Tags.VERB_ED.equals(tag) ||
+                            Tags.VERB_ING.equals(tag))) {
                 containsNounAdjectivePredicate = true;
             }
-            if (mainVerbIndex > -1 && i > mainVerbIndex && Tags.ADVERB.equals(tag)) {
+            if ((mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex && haveBeenSequenceStartIndex > i) && Tags.ADVERB.equals(tag)) {
                 containsAdverbPredicate = true;
             }
         }
-        if (mainVerbIndex == -1 || !containsSubject || (!containsNounAdjectivePredicate && containsAdverbPredicate) ||
-                (Tags.IS_ARE.equals(tags.get(mainVerbIndex)) && !containsNounAdjectivePredicate)) {
+        if ((mainVerbIndex == -1 && haveBeenSequenceStartIndex == -1) || !containsSubject || (!containsNounAdjectivePredicate && containsAdverbPredicate) ||
+                /*(Tags.IS_ARE.equals(tags.get(mainVerbIndex)) &&*/ !containsNounAdjectivePredicate) {
             return semanticPreprocessingData;
         } else {
             semanticPreprocessingData.setTagsList(filteredTags);
             semanticPreprocessingData.setTokensList(filteredTokens);
+            semanticPreprocessingData.setContainsSubject(containsSubject);
             semanticPreprocessingData.setContainsBeforeVerbPreposition(containsBeforeVerbPreposition);
             semanticPreprocessingData.setHaveBeenSequenceStartIndex(haveBeenSequenceStartIndex);
             semanticPreprocessingData.setVerbIndex(mainVerbIndex);

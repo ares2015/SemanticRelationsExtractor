@@ -20,12 +20,18 @@ public class SubjectExtractorImpl implements SubjectExtractor {
         List<String> tokensList = semanticPreprocessingData.getTokensList();
         List<String> tagsList = semanticPreprocessingData.getTagsList();
         int verbIndex = semanticPreprocessingData.getVerbIndex();
+        int haveBeenSequenceStartIndex = semanticPreprocessingData.getHaveBeenSequenceStartIndex();
         if (!semanticPreprocessingData.containsBeforeVerbPreposition()) {
-            String atomicSubject = extractAtomicSubject(tokensList, tagsList, verbIndex);
+            String atomicSubject = "";
+            if (haveBeenSequenceStartIndex > -1) {
+                atomicSubject = extractAtomicSubject(tokensList, tagsList, haveBeenSequenceStartIndex);
+            } else {
+                atomicSubject = extractAtomicSubject(tokensList, tagsList, verbIndex);
+            }
             semanticExtractionData.setAtomicSubject(atomicSubject);
             LOGGER.info("Atomic subject: " + atomicSubject);
         }
-        if (verbIndex > 1) {
+        if (verbIndex > 1 || haveBeenSequenceStartIndex > 1) {
             String extendedSubject = extractExtendedSubject(tokensList, tagsList);
             semanticExtractionData.setExtendedSubject(extendedSubject);
             LOGGER.info("Extended subject: " + extendedSubject);
@@ -41,10 +47,10 @@ public class SubjectExtractorImpl implements SubjectExtractor {
         throw new IllegalStateException("There is no subject in the sentence");
     }
 
-    private String extractExtendedSubject(List<String> tokensList, List<String> encodedTagsList) {
+    private String extractExtendedSubject(List<String> tokensList, List<String> tagsList) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < encodedTagsList.size(); i++) {
-            if (SemanticExtractionFilterCache.subjectNounPredicateExtractionAllowedTags.contains(encodedTagsList.get(i))) {
+        for (int i = 0; i < tagsList.size(); i++) {
+            if (SemanticExtractionFilterCache.subjectNounPredicateExtractionAllowedTags.contains(tagsList.get(i))) {
                 stringBuilder.append(tokensList.get(i));
                 stringBuilder.append(" ");
             } else {

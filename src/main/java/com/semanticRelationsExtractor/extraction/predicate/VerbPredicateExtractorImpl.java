@@ -45,8 +45,9 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
     private String extractExtendedHaveBeenVerbPredicate(List<String> tokensList, List<String> tagsList, int haveBeenSequenceStartIndex) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = haveBeenSequenceStartIndex; i < tokensList.size(); i++) {
-            if (Tags.HAVE.equals(tagsList.get(i)) || Tags.IS_ARE.equals(tagsList.get(i)) || Tags.ADJECTIVE.equals(tagsList.get(i))
-                    || Tags.VERB_ED.equals(tagsList.get(i)) || Tags.ADVERB.equals(tagsList.get(i))) {
+            String tag = tagsList.get(i);
+            if (Tags.HAVE.equals(tag) || Tags.IS_ARE.equals(tag) || Tags.ADJECTIVE.equals(tag)
+                    || Tags.VERB_ED.equals(tag) || Tags.ADVERB.equals(tag)) {
                 stringBuilder.append(tokensList.get(i));
                 stringBuilder.append(" ");
             } else {
