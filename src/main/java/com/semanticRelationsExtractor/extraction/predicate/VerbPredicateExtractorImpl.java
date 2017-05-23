@@ -21,24 +21,23 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
         int verbIndex = semanticPreprocessingData.getVerbIndex();
         int modalVerbIndex = semanticPreprocessingData.getModalVerbIndex();
         int haveBeenSequenceStartIndex = semanticPreprocessingData.getHaveBeenSequenceStartIndex();
-        if (haveBeenSequenceStartIndex > -1) {
+        if (modalVerbIndex > -1) {
+            String extendedVerbPredicate = extractExtendedVerbPredicate(tokensList, tagsList, modalVerbIndex);
+            semanticExtractionData.setExtendedVerbPredicate(extendedVerbPredicate);
+            semanticExtractionData.setAtomicVerbPredicate(extendedVerbPredicate);
+            LOGGER.info("Extended verb predicate: " + extendedVerbPredicate);
+            LOGGER.info("Atomic verb predicate: " + extendedVerbPredicate);
+        } else if (haveBeenSequenceStartIndex > -1) {
             String extendedVerbPredicate = extractExtendedHaveBeenVerbPredicate(tokensList, tagsList, haveBeenSequenceStartIndex);
             semanticExtractionData.setExtendedVerbPredicate(extendedVerbPredicate);
             String atomicVerbPredicate = tokensList.get(haveBeenSequenceStartIndex) + " " + tokensList.get(haveBeenSequenceStartIndex + 1);
             semanticExtractionData.setAtomicVerbPredicate(atomicVerbPredicate);
             LOGGER.info("Extended verb predicate: " + extendedVerbPredicate);
             LOGGER.info("Atomic verb predicate: " + atomicVerbPredicate);
-        } else if (modalVerbIndex > -1) {
-            String extendedVerbPredicate = extractExtendedVerbPredicate(tokensList, tagsList, modalVerbIndex);
-            semanticExtractionData.setExtendedVerbPredicate(extendedVerbPredicate);
-            semanticExtractionData.setAtomicVerbPredicate(extendedVerbPredicate);
-            LOGGER.info("Extended verb predicate: " + extendedVerbPredicate);
-            LOGGER.info("Atomic verb predicate: " + extendedVerbPredicate);
         } else {
             String atomicVerbPredicate = tokensList.get(verbIndex);
             semanticExtractionData.setAtomicVerbPredicate(atomicVerbPredicate);
             LOGGER.info("Atomic verb predicate: " + atomicVerbPredicate);
-
         }
     }
 

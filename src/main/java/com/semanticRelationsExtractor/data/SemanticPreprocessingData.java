@@ -19,6 +19,8 @@ public final class SemanticPreprocessingData {
 
     private int haveBeenSequenceStartIndex = -1;
 
+    private int haveBeenSequenceEndIndex = -1;
+
     private boolean containsBeforeVerbPreposition = false;
 
     private int afterVerbFirstPrepositionIndex = -1;
@@ -73,6 +75,14 @@ public final class SemanticPreprocessingData {
 
     public void setHaveBeenSequenceStartIndex(int haveBeenSequenceStartIndex) {
         this.haveBeenSequenceStartIndex = haveBeenSequenceStartIndex;
+    }
+
+    public int getHaveBeenSequenceEndIndex() {
+        return haveBeenSequenceEndIndex;
+    }
+
+    public void setHaveBeenSequenceEndIndex(int haveBeenSequenceEndIndex) {
+        this.haveBeenSequenceEndIndex = haveBeenSequenceEndIndex;
     }
 
     public boolean containsBeforeVerbPreposition() {

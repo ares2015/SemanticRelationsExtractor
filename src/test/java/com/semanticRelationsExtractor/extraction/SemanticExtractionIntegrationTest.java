@@ -137,4 +137,20 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("shaken ", semanticExtractionData.getExtendedNounPredicate());
     }
+
+    @Test
+    public void test8() {
+        String sentence = "Mary could have sung nice songs";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N MV H Ved AJ N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("Mary", semanticExtractionData.getAtomicSubject());
+        assertEquals("", semanticExtractionData.getExtendedSubject());
+        assertEquals("could have sung ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("could have sung ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("songs", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("nice songs ", semanticExtractionData.getExtendedNounPredicate());
+    }
 }
