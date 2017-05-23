@@ -9,6 +9,13 @@ import java.util.List;
 
 /**
  * Created by Oliver on 2/17/2017.
+ *
+ * Possible scenarios:
+ * 1. single verb - Mary sings very nicely (VERB, VERB_ED, HAVE can be main verb)
+ * 2. modal verb - Mary can sing very nicely
+ * 3. have been sequence - Mary has sung very nicely
+ * 4. modal have been sequence - Mary could have sing very nicely
+ *
  */
 public class SemanticPreprocessorImpl implements SemanticPreprocessor {
 
@@ -31,16 +38,16 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
 
         haveBeenSequenceStartIndex = findHaveBeenSequenceStartIndex(filteredTags);
 //        if (haveBeenSequenceStartIndex == -1) {
-            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
+        mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
+        if (mainVerbIndex == -1) {
+            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
             if (mainVerbIndex == -1) {
-                mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
+                mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
                 if (mainVerbIndex == -1) {
-                    mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
-                    if (mainVerbIndex == -1) {
-                        return semanticPreprocessingData;
-                    }
+                    return semanticPreprocessingData;
                 }
             }
+        }
 //        }
 
         for (int i = 0; i < filteredTags.size(); i++) {
@@ -49,29 +56,26 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             if (Tags.MODAL_VERB.equals(tag)) {
                 modalVerbIndex = i;
             }
-            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && (i > mainVerbIndex /*|| i > haveBeenSequenceStartIndex*/)) {
+            if (isFirstAfterVerbPreposition(mainVerbIndex, afterVerbFirstPrepositionIndex, i, tag)) {
                 afterVerbFirstPrepositionIndex = i;
             }
-            if ((Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex)) {
+            if (isBeforeVerbPreposition(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
                 containsBeforeVerbPreposition = true;
             }
-            if (Tags.VERB_ING.equals(tag) && mainVerbIndex < i) {
+            if (isAfterMainVerbVerbIng(mainVerbIndex, i, tag)) {
                 containsAfterVerbVerbIng = true;
             }
-            if ((Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex)) {
+            if (isSubject(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
                 containsSubject = true;
             }
-            if ((mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex || haveBeenSequenceStartIndex > i) &&
-                    ((Tags.NOUN.equals(tag) || Tags.ADJECTIVE.equals(tag)) || Tags.VERB_ED.equals(tag) ||
-                            Tags.VERB_ING.equals(tag))) {
+            if (isNounAdjectivePredicate(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
                 containsNounAdjectivePredicate = true;
             }
-            if ((mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex && haveBeenSequenceStartIndex > i) && Tags.ADVERB.equals(tag)) {
+            if (isAdverbPredicate(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
                 containsAdverbPredicate = true;
             }
         }
-        if ((mainVerbIndex == -1 && haveBeenSequenceStartIndex == -1) || !containsSubject || (!containsNounAdjectivePredicate && containsAdverbPredicate) ||
-                /*(Tags.IS_ARE.equals(tags.get(mainVerbIndex)) &&*/ !containsNounAdjectivePredicate) {
+        if (canGoToExtraction(mainVerbIndex, haveBeenSequenceStartIndex, containsSubject, containsNounAdjectivePredicate, containsAdverbPredicate)) {
             return semanticPreprocessingData;
         } else {
             semanticPreprocessingData.setTagsList(filteredTags);
@@ -86,6 +90,36 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             semanticPreprocessingData.setCanGoToExtraction(true);
             return semanticPreprocessingData;
         }
+    }
+
+    private boolean canGoToExtraction(int mainVerbIndex, int haveBeenSequenceStartIndex, boolean containsSubject, boolean containsNounAdjectivePredicate, boolean containsAdverbPredicate) {
+        return (mainVerbIndex == -1 && haveBeenSequenceStartIndex == -1) || !containsSubject || (!containsNounAdjectivePredicate && containsAdverbPredicate) ||/*(Tags.IS_ARE.equals(tags.get(mainVerbIndex)) &&*/ !containsNounAdjectivePredicate;
+    }
+
+    private boolean isAdverbPredicate(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
+        return (mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex && haveBeenSequenceStartIndex > i) && Tags.ADVERB.equals(tag);
+    }
+
+    private boolean isNounAdjectivePredicate(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
+        return (mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex || haveBeenSequenceStartIndex > i) &&
+                ((Tags.NOUN.equals(tag) || Tags.ADJECTIVE.equals(tag)) || Tags.VERB_ED.equals(tag) ||
+                        Tags.VERB_ING.equals(tag));
+    }
+
+    private boolean isSubject(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
+        return (Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex);
+    }
+
+    private boolean isAfterMainVerbVerbIng(int mainVerbIndex, int i, String tag) {
+        return Tags.VERB_ING.equals(tag) && mainVerbIndex < i;
+    }
+
+    private boolean isBeforeVerbPreposition(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
+        return (Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex);
+    }
+
+    private boolean isFirstAfterVerbPreposition(int mainVerbIndex, int afterVerbFirstPrepositionIndex, int i, String tag) {
+        return (Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && (i > mainVerbIndex /*|| i > haveBeenSequenceStartIndex*/);
     }
 
     private FilteredSentence filterSentence(List<String> tags, List<String> tokens) {

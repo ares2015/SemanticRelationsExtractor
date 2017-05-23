@@ -15,6 +15,7 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
 
     private final static Logger LOGGER = Logger.getLogger(NounPredicateExtractorImpl.class.getName());
 
+
     @Override
     public void extract(SemanticExtractionData semanticExtractionData, SemanticPreprocessingData semanticPreprocessingData) {
         List<String> tokensList = semanticPreprocessingData.getTokensList();

@@ -19,19 +19,14 @@ public class SubjectExtractorImpl implements SubjectExtractor {
     public void extract(SemanticExtractionData semanticExtractionData, SemanticPreprocessingData semanticPreprocessingData) {
         List<String> tokensList = semanticPreprocessingData.getTokensList();
         List<String> tagsList = semanticPreprocessingData.getTagsList();
-        int verbIndex = semanticPreprocessingData.getVerbIndex();
-        int haveBeenSequenceStartIndex = semanticPreprocessingData.getHaveBeenSequenceStartIndex();
+        int verbIndex = getVerbIndex(semanticPreprocessingData);
         if (!semanticPreprocessingData.containsBeforeVerbPreposition()) {
             String atomicSubject = "";
-            if (haveBeenSequenceStartIndex > -1) {
-                atomicSubject = extractAtomicSubject(tokensList, tagsList, haveBeenSequenceStartIndex);
-            } else {
-                atomicSubject = extractAtomicSubject(tokensList, tagsList, verbIndex);
-            }
+            atomicSubject = extractAtomicSubject(tokensList, tagsList, verbIndex);
             semanticExtractionData.setAtomicSubject(atomicSubject);
             LOGGER.info("Atomic subject: " + atomicSubject);
         }
-        if (verbIndex > 1 || haveBeenSequenceStartIndex > 1) {
+        if (verbIndex > 1) {
             String extendedSubject = extractExtendedSubject(tokensList, tagsList);
             semanticExtractionData.setExtendedSubject(extendedSubject);
             LOGGER.info("Extended subject: " + extendedSubject);
@@ -58,5 +53,15 @@ public class SubjectExtractorImpl implements SubjectExtractor {
             }
         }
         return stringBuilder.toString();
+    }
+
+    private int getVerbIndex(SemanticPreprocessingData semanticPreprocessingData) {
+        if (semanticPreprocessingData.getModalVerbIndex() > -1) {
+            return semanticPreprocessingData.getModalVerbIndex();
+        } else if (semanticPreprocessingData.getHaveBeenSequenceStartIndex() > -1) {
+            return semanticPreprocessingData.getHaveBeenSequenceStartIndex();
+        } else {
+            return semanticPreprocessingData.getVerbIndex();
+        }
     }
 }
