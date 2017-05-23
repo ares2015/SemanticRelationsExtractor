@@ -115,7 +115,7 @@ public class SemanticExtractionIntegrationTest {
         SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("earth", semanticExtractionData.getAtomicSubject());
-        assertEquals("earth ", semanticExtractionData.getExtendedSubject());
+        assertEquals("", semanticExtractionData.getExtendedSubject());
         assertEquals("will be shaken ", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("will be shaken ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());
@@ -131,7 +131,7 @@ public class SemanticExtractionIntegrationTest {
         SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("earth", semanticExtractionData.getAtomicSubject());
-        assertEquals("earth ", semanticExtractionData.getExtendedSubject());
+        assertEquals("", semanticExtractionData.getExtendedSubject());
         assertEquals("has been", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("has been shaken ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());

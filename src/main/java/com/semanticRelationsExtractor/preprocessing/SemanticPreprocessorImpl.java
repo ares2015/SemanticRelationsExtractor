@@ -9,13 +9,12 @@ import java.util.List;
 
 /**
  * Created by Oliver on 2/17/2017.
- *
+ * <p>
  * Possible scenarios:
  * 1. single verb - Mary sings very nicely (VERB, VERB_ED, HAVE can be main verb)
  * 2. modal verb - Mary can sing very nicely
  * 3. have been sequence - Mary has sung very nicely
  * 4. modal have been sequence - Mary could have sing very nicely
- *
  */
 public class SemanticPreprocessorImpl implements SemanticPreprocessor {
 
@@ -37,7 +36,7 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         List<String> filteredTokens = filteredSentence.getFilteredTokens();
 
         haveBeenSequenceStartIndex = findHaveBeenSequenceStartIndex(filteredTags);
-//        if (haveBeenSequenceStartIndex == -1) {
+
         mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
         if (mainVerbIndex == -1) {
             mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
@@ -48,7 +47,6 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
                 }
             }
         }
-//        }
 
         for (int i = 0; i < filteredTags.size(); i++) {
             String tag = filteredTags.get(i);
@@ -59,23 +57,23 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             if (isFirstAfterVerbPreposition(mainVerbIndex, afterVerbFirstPrepositionIndex, i, tag)) {
                 afterVerbFirstPrepositionIndex = i;
             }
-            if (isBeforeVerbPreposition(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
+            if (isBeforeVerbPreposition(mainVerbIndex, i, tag)) {
                 containsBeforeVerbPreposition = true;
             }
             if (isAfterMainVerbVerbIng(mainVerbIndex, i, tag)) {
                 containsAfterVerbVerbIng = true;
             }
-            if (isSubject(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
+            if (isSubject(mainVerbIndex, i, tag)) {
                 containsSubject = true;
             }
-            if (isNounAdjectivePredicate(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
+            if (isNounAdjectivePredicate(mainVerbIndex, i, tag)) {
                 containsNounAdjectivePredicate = true;
             }
-            if (isAdverbPredicate(mainVerbIndex, haveBeenSequenceStartIndex, i, tag)) {
+            if (isAdverbPredicate(mainVerbIndex, i, tag)) {
                 containsAdverbPredicate = true;
             }
         }
-        if (canGoToExtraction(mainVerbIndex, haveBeenSequenceStartIndex, containsSubject, containsNounAdjectivePredicate, containsAdverbPredicate)) {
+        if (canGoToExtraction(mainVerbIndex, containsSubject, containsNounAdjectivePredicate, containsAdverbPredicate)) {
             return semanticPreprocessingData;
         } else {
             semanticPreprocessingData.setTagsList(filteredTags);
@@ -92,34 +90,35 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         }
     }
 
-    private boolean canGoToExtraction(int mainVerbIndex, int haveBeenSequenceStartIndex, boolean containsSubject, boolean containsNounAdjectivePredicate, boolean containsAdverbPredicate) {
-        return (mainVerbIndex == -1 && haveBeenSequenceStartIndex == -1) || !containsSubject || (!containsNounAdjectivePredicate && containsAdverbPredicate) ||/*(Tags.IS_ARE.equals(tags.get(mainVerbIndex)) &&*/ !containsNounAdjectivePredicate;
+    private boolean canGoToExtraction(int mainVerbIndex, boolean containsSubject, boolean containsNounAdjectivePredicate, boolean containsAdverbPredicate) {
+        return mainVerbIndex == -1 || !containsSubject || (!containsNounAdjectivePredicate && containsAdverbPredicate)
+                ||/*(Tags.IS_ARE.equals(tags.get(mainVerbIndex)) &&*/ !containsNounAdjectivePredicate;
     }
 
-    private boolean isAdverbPredicate(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
-        return (mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex && haveBeenSequenceStartIndex > i) && Tags.ADVERB.equals(tag);
+    private boolean isAdverbPredicate(int mainVerbIndex, int i, String tag) {
+        return mainVerbIndex > -1 && i > mainVerbIndex && Tags.ADVERB.equals(tag);
     }
 
-    private boolean isNounAdjectivePredicate(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
-        return (mainVerbIndex > -1 || haveBeenSequenceStartIndex > -1) && (i > mainVerbIndex || haveBeenSequenceStartIndex > i) &&
+    private boolean isNounAdjectivePredicate(int mainVerbIndex, int i, String tag) {
+        return mainVerbIndex > -1 && i > mainVerbIndex &&
                 ((Tags.NOUN.equals(tag) || Tags.ADJECTIVE.equals(tag)) || Tags.VERB_ED.equals(tag) ||
                         Tags.VERB_ING.equals(tag));
     }
 
-    private boolean isSubject(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
-        return (Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex);
+    private boolean isSubject(int mainVerbIndex, int i, String tag) {
+        return (Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag)) && i < mainVerbIndex;
     }
 
     private boolean isAfterMainVerbVerbIng(int mainVerbIndex, int i, String tag) {
         return Tags.VERB_ING.equals(tag) && mainVerbIndex < i;
     }
 
-    private boolean isBeforeVerbPreposition(int mainVerbIndex, int haveBeenSequenceStartIndex, int i, String tag) {
-        return (Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && (i < mainVerbIndex || i < haveBeenSequenceStartIndex);
+    private boolean isBeforeVerbPreposition(int mainVerbIndex, int i, String tag) {
+        return (Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && i < mainVerbIndex;
     }
 
     private boolean isFirstAfterVerbPreposition(int mainVerbIndex, int afterVerbFirstPrepositionIndex, int i, String tag) {
-        return (Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && (i > mainVerbIndex /*|| i > haveBeenSequenceStartIndex*/);
+        return (Tags.PREPOSITION.equals(tag) || Tags.TO.equals(tag)) && afterVerbFirstPrepositionIndex == -1 && i > mainVerbIndex;
     }
 
     private FilteredSentence filterSentence(List<String> tags, List<String> tokens) {
