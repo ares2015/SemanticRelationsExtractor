@@ -19,22 +19,22 @@ public class SubjectExtractorImpl implements SubjectExtractor {
     public void extract(SemanticExtractionData semanticExtractionData, SemanticPreprocessingData semanticPreprocessingData) {
         List<String> tokensList = semanticPreprocessingData.getTokensList();
         List<String> tagsList = semanticPreprocessingData.getTagsList();
-        int verbIndex = getVerbIndex(semanticPreprocessingData);
+        int extractionEndIndex = getExtractionEndIndex(semanticPreprocessingData);
         if (!semanticPreprocessingData.containsBeforeVerbPreposition()) {
             String atomicSubject = "";
-            atomicSubject = extractAtomicSubject(tokensList, tagsList, verbIndex);
+            atomicSubject = extractAtomicSubject(tokensList, tagsList, extractionEndIndex);
             semanticExtractionData.setAtomicSubject(atomicSubject);
             LOGGER.info("Atomic subject: " + atomicSubject);
         }
-        if (verbIndex > 1) {
+        if (extractionEndIndex > 1) {
             String extendedSubject = extractExtendedSubject(tokensList, tagsList);
             semanticExtractionData.setExtendedSubject(extendedSubject);
             LOGGER.info("Extended subject: " + extendedSubject);
         }
     }
 
-    private String extractAtomicSubject(List<String> tokensList, List<String> tagsList, int verbIndex) {
-        for (int i = verbIndex; i >= 0; i--) {
+    private String extractAtomicSubject(List<String> tokensList, List<String> tagsList, int extractionEndIndex) {
+        for (int i = extractionEndIndex; i >= 0; i--) {
             if (Tags.NOUN.equals(tagsList.get(i)) || Tags.VERB_ED.equals(tagsList.get(i))) {
                 return tokensList.get(i);
             }
@@ -55,7 +55,7 @@ public class SubjectExtractorImpl implements SubjectExtractor {
         return stringBuilder.toString();
     }
 
-    private int getVerbIndex(SemanticPreprocessingData semanticPreprocessingData) {
+    private int getExtractionEndIndex(SemanticPreprocessingData semanticPreprocessingData) {
         if (semanticPreprocessingData.getModalVerbIndex() > -1) {
             return semanticPreprocessingData.getModalVerbIndex();
         } else if (semanticPreprocessingData.getHaveBeenSequenceStartIndex() > -1) {
