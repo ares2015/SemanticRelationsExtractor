@@ -60,8 +60,9 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
     private String extractExtendedVerbPredicate(List<String> tokensList, List<String> tagsList, int modalVerbIndex) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = modalVerbIndex; i < tokensList.size(); i++) {
-            if (Tags.VERB.equals(tagsList.get(i)) || Tags.VERB_ED.equals(tagsList.get(i)) || Tags.MODAL_VERB.equals(tagsList.get(i))
-                    || Tags.IS_ARE.equals(tagsList.get(i)) || Tags.ADVERB.equals(tagsList.get(i))) {
+            String tag = tagsList.get(i);
+            if (Tags.HAVE.equals(tag) || Tags.VERB.equals(tag) || Tags.VERB_ED.equals(tag) || Tags.MODAL_VERB.equals(tag)
+                    || Tags.IS_ARE.equals(tag) || Tags.ADVERB.equals(tag)) {
                 stringBuilder.append(tokensList.get(i));
                 stringBuilder.append(" ");
             } else {
