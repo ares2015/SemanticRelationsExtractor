@@ -12,9 +12,14 @@ public final class SemanticExtractionFilterCache {
 
     public static final Set<String> semanticExtractionAllowedTags = new HashSet<>();
 
+    public static final Set<String> extendedHaveBeenVerbPredicateExtractionAllowedTags = new HashSet<>();
+
+    public static final Set<String> extendedVerbPredicateExtractionAllowedTags = new HashSet<>();
+
     public static final Set<String> subjectNounPredicateExtractionAllowedTags = new HashSet<>();
 
     public static final Set<String> wordsToFilterCache = new HashSet<>();
+
 
     static {
         semanticExtractionAllowedTags.add(Tags.ADJECTIVE);
@@ -33,6 +38,19 @@ public final class SemanticExtractionFilterCache {
         semanticExtractionAllowedTags.add(Tags.VERB);
         semanticExtractionAllowedTags.add(Tags.VERB_ING);
         semanticExtractionAllowedTags.add(Tags.VERB_ED);
+
+        extendedVerbPredicateExtractionAllowedTags.add(Tags.HAVE);
+        extendedVerbPredicateExtractionAllowedTags.add(Tags.VERB);
+        extendedVerbPredicateExtractionAllowedTags.add(Tags.VERB_ED);
+        extendedVerbPredicateExtractionAllowedTags.add(Tags.MODAL_VERB);
+        extendedVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE);
+        extendedVerbPredicateExtractionAllowedTags.add(Tags.ADVERB);
+
+        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.HAVE);
+        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE);
+        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.ADJECTIVE);
+        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.VERB_ED);
+        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.ADVERB);
 
         subjectNounPredicateExtractionAllowedTags.add(Tags.ADJECTIVE);
         subjectNounPredicateExtractionAllowedTags.add(Tags.ADVERB);

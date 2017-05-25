@@ -1,6 +1,8 @@
 package com.semanticRelationsExtractor.preprocessing;
 
 import com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache;
+import com.semanticRelationsExtractor.data.FilteredSentence;
+import com.semanticRelationsExtractor.data.HaveBeenSequenceIndexes;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.tags.Tags;
 
@@ -168,47 +170,6 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             }
         }
         return verbIndex;
-    }
-
-    private class FilteredSentence {
-
-        List<String> filteredTags;
-
-        List<String> filteredTokens;
-
-        public FilteredSentence(List<String> filteredTags, List<String> filteredTokens) {
-            this.filteredTags = filteredTags;
-            this.filteredTokens = filteredTokens;
-        }
-
-        public List<String> getFilteredTokens() {
-            return filteredTokens;
-        }
-
-        public List<String> getFilteredTags() {
-            return filteredTags;
-        }
-    }
-
-    private class HaveBeenSequenceIndexes {
-
-        int startIndex;
-
-        int endIndex;
-
-        public HaveBeenSequenceIndexes(int startIndex, int endIndex) {
-            this.startIndex = startIndex;
-            this.endIndex = endIndex;
-        }
-
-        public int getStartIndex() {
-            return startIndex;
-        }
-
-        public int getEndIndex() {
-            return endIndex;
-        }
-
     }
 
 }

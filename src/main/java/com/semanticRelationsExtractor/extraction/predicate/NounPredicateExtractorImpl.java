@@ -42,8 +42,7 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
         }
     }
 
-    private int getLastNounVerbEdIndex(List<String> encodedTagsList,
-                                       int extractionStartIndex, int afterVerbPrepositionIndex) {
+    private int getLastNounVerbEdIndex(List<String> encodedTagsList, int extractionStartIndex, int afterVerbPrepositionIndex) {
         int lastNounIndex = -1;
         if (afterVerbPrepositionIndex > -1) {
             for (int i = extractionStartIndex + 1; i < afterVerbPrepositionIndex; i++) {

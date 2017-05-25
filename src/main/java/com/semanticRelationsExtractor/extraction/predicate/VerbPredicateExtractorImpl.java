@@ -2,10 +2,12 @@ package com.semanticRelationsExtractor.extraction.predicate;
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
-import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import static com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache.extendedHaveBeenVerbPredicateExtractionAllowedTags;
+import static com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache.extendedVerbPredicateExtractionAllowedTags;
 
 /**
  * Created by Oliver on 2/17/2017.
@@ -41,12 +43,11 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
         }
     }
 
-    private String extractExtendedHaveBeenVerbPredicate(List<String> tokensList, List<String> tagsList, int haveBeenSequenceStartIndex) {
+    private String extractExtendedVerbPredicate(List<String> tokensList, List<String> tagsList, int modalVerbIndex) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = haveBeenSequenceStartIndex; i < tokensList.size(); i++) {
+        for (int i = modalVerbIndex; i < tokensList.size(); i++) {
             String tag = tagsList.get(i);
-            if (Tags.HAVE.equals(tag) || Tags.IS_ARE.equals(tag) || Tags.ADJECTIVE.equals(tag)
-                    || Tags.VERB_ED.equals(tag) || Tags.ADVERB.equals(tag)) {
+            if (extendedVerbPredicateExtractionAllowedTags.contains(tag)) {
                 stringBuilder.append(tokensList.get(i));
                 stringBuilder.append(" ");
             } else {
@@ -56,12 +57,11 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
         return stringBuilder.toString();
     }
 
-    private String extractExtendedVerbPredicate(List<String> tokensList, List<String> tagsList, int modalVerbIndex) {
+    private String extractExtendedHaveBeenVerbPredicate(List<String> tokensList, List<String> tagsList, int haveBeenSequenceStartIndex) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = modalVerbIndex; i < tokensList.size(); i++) {
+        for (int i = haveBeenSequenceStartIndex; i < tokensList.size(); i++) {
             String tag = tagsList.get(i);
-            if (Tags.HAVE.equals(tag) || Tags.VERB.equals(tag) || Tags.VERB_ED.equals(tag) || Tags.MODAL_VERB.equals(tag)
-                    || Tags.IS_ARE.equals(tag) || Tags.ADVERB.equals(tag)) {
+            if (extendedHaveBeenVerbPredicateExtractionAllowedTags.contains(tag)) {
                 stringBuilder.append(tokensList.get(i));
                 stringBuilder.append(" ");
             } else {
