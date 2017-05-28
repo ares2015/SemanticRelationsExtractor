@@ -156,7 +156,7 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         for (int i = 0; i < tags.size() - 1; i++) {
             String tag1 = tags.get(i);
             String tag2 = tags.get(i + 1);
-            if (Tags.HAVE.equals(tag1) && (Tags.IS_ARE.equals(tag2) || Tags.VERB_ED.equals(tag2))) {
+            if ((Tags.HAVE.equals(tag1) || Tags.HAVE_NOT.equals(tag1)) && (Tags.IS_ARE.equals(tag2) || Tags.VERB_ED.equals(tag2))) {
                 startIndex = i;
                 continue;
             }
@@ -172,9 +172,9 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         int verbIndex = -1;
         for (int i = 0; i < tags.size(); i++) {
             String tag = tags.get(i);
-            if ((verbTag.equals(tag) || Tags.IS_ARE.equals(tag)) && !verbFound) {
+            if ((verbTag.equals(tag) || Tags.IS_ARE.equals(tag) || Tags.IS_ARE_NOT.equals(tag)) && !verbFound) {
                 verbIndex = i;
-            } else if ((verbTag.equals(tag) || Tags.IS_ARE.equals(tag)) && verbFound) {
+            } else if ((verbTag.equals(tag) || Tags.IS_ARE.equals(tag) || Tags.IS_ARE_NOT.equals(tag)) && verbFound) {
                 verbIndex = -1;
             }
         }
