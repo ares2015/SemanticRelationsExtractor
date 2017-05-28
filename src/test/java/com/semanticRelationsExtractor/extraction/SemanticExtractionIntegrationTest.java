@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Oliver on 5/18/2017.
@@ -152,5 +153,54 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("could have sung ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("songs", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("nice songs ", semanticExtractionData.getExtendedNounPredicate());
+    }
+
+    @Test
+    public void test9() {
+        String sentence = "Mary could not have sung nice songs";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N MV NOT H Ved AJ N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("Mary", semanticExtractionData.getAtomicSubject());
+        assertEquals("", semanticExtractionData.getExtendedSubject());
+        assertEquals("could not have sung ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("could not have sung ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("songs", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("nice songs ", semanticExtractionData.getExtendedNounPredicate());
+        assertTrue(semanticExtractionData.isNegativeVerbPredicate());
+    }
+
+    @Test
+    public void test10() {
+        String sentence = "Mary couldn't have sung nice songs";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N MV_NOT H Ved AJ N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("Mary", semanticExtractionData.getAtomicSubject());
+//        assertEquals("", semanticExtractionData.getExtendedSubject());
+        assertEquals("couldn't have sung ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("couldn't have sung ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("songs", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("nice songs ", semanticExtractionData.getExtendedNounPredicate());
+    }
+
+    @Test
+    public void test11() {
+        String sentence = "Mary didn't go to school";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N DO_NOT V TO N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("Mary", semanticExtractionData.getAtomicSubject());
+//        assertEquals("", semanticExtractionData.getExtendedSubject());
+        assertEquals("didn't go ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("didn't go ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("school", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("", semanticExtractionData.getExtendedNounPredicate());
     }
 }

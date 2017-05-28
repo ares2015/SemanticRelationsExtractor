@@ -40,11 +40,20 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
 
         mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
         if (mainVerbIndex == -1) {
-            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
+            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE_NOT);
             if (mainVerbIndex == -1) {
-                mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
+                mainVerbIndex = findMainVerbIndex(filteredTags, Tags.DO);
                 if (mainVerbIndex == -1) {
-                    return semanticPreprocessingData;
+                    mainVerbIndex = findMainVerbIndex(filteredTags, Tags.DO_NOT);
+                    if (mainVerbIndex == -1) {
+                        mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
+                        if (mainVerbIndex == -1) {
+                            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
+                            if (mainVerbIndex == -1) {
+                                return semanticPreprocessingData;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -52,7 +61,7 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         for (int i = 0; i < filteredTags.size(); i++) {
             String tag = filteredTags.get(i);
 
-            if (Tags.MODAL_VERB.equals(tag)) {
+            if (Tags.MODAL_VERB.equals(tag) || Tags.MODAL_VERB_NOT.equals(tag)) {
                 modalVerbIndex = i;
             }
             if (isFirstAfterVerbPreposition(mainVerbIndex, afterVerbFirstPrepositionIndex, i, tag)) {

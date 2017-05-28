@@ -6,8 +6,7 @@ import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache.extendedHaveBeenVerbPredicateExtractionAllowedTags;
-import static com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache.extendedVerbPredicateExtractionAllowedTags;
+import static com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache.*;
 
 /**
  * Created by Oliver on 2/17/2017.
@@ -27,19 +26,28 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
             String extendedVerbPredicate = extractExtendedVerbPredicate(tokensList, tagsList, modalVerbIndex);
             semanticExtractionData.setExtendedVerbPredicate(extendedVerbPredicate);
             semanticExtractionData.setAtomicVerbPredicate(extendedVerbPredicate);
+            boolean isNegativeVerbPredicate = isNegativeVerbPredicate(modalVerbIndex, tagsList);
+            semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
             LOGGER.info("Extended verb predicate: " + extendedVerbPredicate);
             LOGGER.info("Atomic verb predicate: " + extendedVerbPredicate);
+            LOGGER.info("Is negative verb predicate: " + isNegativeVerbPredicate);
         } else if (haveBeenSequenceStartIndex > -1) {
             String extendedVerbPredicate = extractExtendedHaveBeenVerbPredicate(tokensList, tagsList, haveBeenSequenceStartIndex);
             semanticExtractionData.setExtendedVerbPredicate(extendedVerbPredicate);
             String atomicVerbPredicate = tokensList.get(haveBeenSequenceStartIndex) + " " + tokensList.get(haveBeenSequenceStartIndex + 1);
             semanticExtractionData.setAtomicVerbPredicate(atomicVerbPredicate);
+            boolean isNegativeVerbPredicate = isNegativeVerbPredicate(haveBeenSequenceStartIndex, tagsList);
+            semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
             LOGGER.info("Extended verb predicate: " + extendedVerbPredicate);
             LOGGER.info("Atomic verb predicate: " + atomicVerbPredicate);
+            LOGGER.info("Is negative verb predicate: " + isNegativeVerbPredicate);
         } else {
             String atomicVerbPredicate = tokensList.get(verbIndex);
             semanticExtractionData.setAtomicVerbPredicate(atomicVerbPredicate);
+            boolean isNegativeVerbPredicate = isNegativeVerbPredicate(verbIndex, tagsList);
+            semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
             LOGGER.info("Atomic verb predicate: " + atomicVerbPredicate);
+            LOGGER.info("Is negative verb predicate: " + isNegativeVerbPredicate);
         }
     }
 
@@ -69,6 +77,15 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
             }
         }
         return stringBuilder.toString();
+    }
+
+    private boolean isNegativeVerbPredicate(int searchStartIndex, List<String> tagsList) {
+        for (String tag : tagsList) {
+            if (negativeVerbPredicateTags.contains(tag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
