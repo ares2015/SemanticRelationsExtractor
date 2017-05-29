@@ -21,6 +21,14 @@ public final class SemanticPreprocessingData {
 
     private int haveBeenSequenceEndIndex = -1;
 
+    private int haveVerbEdSequenceStartIndex = -1;
+
+    private int haveVerbEdSequenceEndIndex = -1;
+
+    private int doVerbSequenceStartIndex = -1;
+
+    private int doVerbSequenceEndIndex = -1;
+
     private boolean containsBeforeVerbPreposition = false;
 
     private int afterVerbFirstPrepositionIndex = -1;
@@ -83,6 +91,38 @@ public final class SemanticPreprocessingData {
 
     public void setHaveBeenSequenceEndIndex(int haveBeenSequenceEndIndex) {
         this.haveBeenSequenceEndIndex = haveBeenSequenceEndIndex;
+    }
+
+    public int getHaveVerbEdSequenceStartIndex() {
+        return haveVerbEdSequenceStartIndex;
+    }
+
+    public void setHaveVerbEdSequenceStartIndex(int haveVerbEdSequenceStartIndex) {
+        this.haveVerbEdSequenceStartIndex = haveVerbEdSequenceStartIndex;
+    }
+
+    public int getHaveVerbEdSequenceEndIndex() {
+        return haveVerbEdSequenceEndIndex;
+    }
+
+    public void setHaveVerbEdSequenceEndIndex(int haveVerbEdSequenceEndIndex) {
+        this.haveVerbEdSequenceEndIndex = haveVerbEdSequenceEndIndex;
+    }
+
+    public int getDoVerbSequenceStartIndex() {
+        return doVerbSequenceStartIndex;
+    }
+
+    public void setDoVerbSequenceStartIndex(int doVerbSequenceStartIndex) {
+        this.doVerbSequenceStartIndex = doVerbSequenceStartIndex;
+    }
+
+    public int getDoVerbSequenceEndIndex() {
+        return doVerbSequenceEndIndex;
+    }
+
+    public void setDoVerbSequenceEndIndex(int doVerbSequenceEndIndex) {
+        this.doVerbSequenceEndIndex = doVerbSequenceEndIndex;
     }
 
     public boolean containsBeforeVerbPreposition() {

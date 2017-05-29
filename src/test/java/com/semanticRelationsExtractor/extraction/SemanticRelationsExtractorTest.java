@@ -59,7 +59,7 @@ public class SemanticRelationsExtractorTest {
         assertEquals("Lennon", semanticExtractionData.getAtomicSubject());
         assertEquals("Shot John Lennon ", semanticExtractionData.getExtendedSubject());
         assertEquals("is", semanticExtractionData.getAtomicVerbPredicate());
-        assertEquals("", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("is still very ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("singer", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("still very popular singer in the United States ", semanticExtractionData.getExtendedNounPredicate());
     }
@@ -115,7 +115,7 @@ public class SemanticRelationsExtractorTest {
         assertEquals("Drones", semanticExtractionData.getAtomicSubject());
         assertEquals("", semanticExtractionData.getExtendedSubject());
         assertEquals("are", semanticExtractionData.getAtomicVerbPredicate());
-        assertEquals("", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("are ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("globalising battlefield ", semanticExtractionData.getExtendedNounPredicate());
         assertEquals("", semanticExtractionData.getAtomicNounPredicate());
     }

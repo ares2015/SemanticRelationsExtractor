@@ -12,7 +12,7 @@ public final class SemanticExtractionFilterCache {
 
     public static final Set<String> semanticExtractionAllowedTags = new HashSet<>();
 
-    public static final Set<String> extendedHaveBeenVerbPredicateExtractionAllowedTags = new HashSet<>();
+    public static final Set<String> sequenceVerbPredicateExtractionAllowedTags = new HashSet<>();
 
     public static final Set<String> extendedVerbPredicateExtractionAllowedTags = new HashSet<>();
 
@@ -59,17 +59,19 @@ public final class SemanticExtractionFilterCache {
         extendedVerbPredicateExtractionAllowedTags.add(Tags.NOT);
         extendedVerbPredicateExtractionAllowedTags.add(Tags.ADVERB);
 
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.HAVE);
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.HAVE_NOT);
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE);
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE_NOT);
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.NOT);
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.ADJECTIVE);
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.VERB_ED);
-        extendedHaveBeenVerbPredicateExtractionAllowedTags.add(Tags.ADVERB);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.DO);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.DO_NOT);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.HAVE);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.HAVE_NOT);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE_NOT);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.NOT);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.ADJECTIVE);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.VERB);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.VERB_ED);
+        sequenceVerbPredicateExtractionAllowedTags.add(Tags.ADVERB);
 
         subjectNounPredicateExtractionAllowedTags.add(Tags.ADJECTIVE);
-        subjectNounPredicateExtractionAllowedTags.add(Tags.ADVERB);
         subjectNounPredicateExtractionAllowedTags.add(Tags.CONJUNCTION);
         subjectNounPredicateExtractionAllowedTags.add(Tags.NOUN);
         subjectNounPredicateExtractionAllowedTags.add(Tags.NUMBER);

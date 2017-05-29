@@ -45,7 +45,7 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
     private int getLastNounVerbEdIndex(List<String> encodedTagsList, int extractionStartIndex, int afterVerbPrepositionIndex) {
         int lastNounIndex = -1;
         if (afterVerbPrepositionIndex > -1) {
-            for (int i = extractionStartIndex + 1; i < afterVerbPrepositionIndex; i++) {
+            for (int i = extractionStartIndex; i <= afterVerbPrepositionIndex; i++) {
                 if (Tags.NOUN.equals(encodedTagsList.get(i)) || Tags.VERB_ED.equals(encodedTagsList.get(i))) {
                     lastNounIndex = i;
                 }
@@ -61,8 +61,9 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
     }
 
     private String extractExtendedNounPredicate(List<String> tokensList, List<String> tagsList, int verbIndex) {
+        int startIndex = verbIndex + 1;
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = verbIndex + 1; i < tokensList.size(); i++) {
+        for (int i = startIndex; i < tokensList.size(); i++) {
             if (i == tokensList.size() - 1 && (Tags.PREPOSITION.equals(tagsList.get(i)) || Tags.CONJUNCTION.equals(tagsList.get(i)))) {
                 break;
             }
@@ -75,6 +76,10 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
     private int getExtractionStartIndex(SemanticPreprocessingData semanticPreprocessingData) {
         if (semanticPreprocessingData.getHaveBeenSequenceEndIndex() > -1) {
             return semanticPreprocessingData.getHaveBeenSequenceEndIndex() - 1;
+        } else if (semanticPreprocessingData.getHaveVerbEdSequenceEndIndex() > -1) {
+            return semanticPreprocessingData.getHaveVerbEdSequenceEndIndex() - 1;
+        } else if (semanticPreprocessingData.getDoVerbSequenceEndIndex() > -1) {
+            return semanticPreprocessingData.getDoVerbSequenceEndIndex() - 1;
         } else {
             return semanticPreprocessingData.getVerbIndex();
         }

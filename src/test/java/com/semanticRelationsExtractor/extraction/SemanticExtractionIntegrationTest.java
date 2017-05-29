@@ -136,7 +136,7 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("has been", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("has been shaken ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());
-        assertEquals("shaken ", semanticExtractionData.getExtendedNounPredicate());
+        assertEquals("", semanticExtractionData.getExtendedNounPredicate());
     }
 
     @Test
@@ -197,10 +197,58 @@ public class SemanticExtractionIntegrationTest {
         SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("Mary", semanticExtractionData.getAtomicSubject());
-//        assertEquals("", semanticExtractionData.getExtendedSubject());
-        assertEquals("didn't go ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("Mary ", semanticExtractionData.getExtendedSubject());
+        assertEquals("didn't go", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("didn't go ", semanticExtractionData.getExtendedVerbPredicate());
-        assertEquals("school", semanticExtractionData.getAtomicNounPredicate());
-        assertEquals("", semanticExtractionData.getExtendedNounPredicate());
+        assertEquals("", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("to school ", semanticExtractionData.getExtendedNounPredicate());
+    }
+
+    @Test
+    public void test12() {
+        String sentence = "Mary didn't buy milk";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N DO_NOT V N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("Mary", semanticExtractionData.getAtomicSubject());
+        assertEquals("Mary ", semanticExtractionData.getExtendedSubject());
+        assertEquals("didn't buy", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("didn't buy ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("milk", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("milk ", semanticExtractionData.getExtendedNounPredicate());
+    }
+
+    @Test
+    public void test13() {
+        String sentence = "Ronaldo runs furiously towards goalie";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N V AV PR N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("Ronaldo", semanticExtractionData.getAtomicSubject());
+        assertEquals("", semanticExtractionData.getExtendedSubject());
+        assertEquals("runs", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("runs furiously ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("furiously towards goalie ", semanticExtractionData.getExtendedNounPredicate());
+    }
+
+    @Test
+    public void test14() {
+        String sentence = "Ronaldo couldn't have run furiously towards goalie";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N MV_NOT H V AV PR N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("Ronaldo", semanticExtractionData.getAtomicSubject());
+        assertEquals("", semanticExtractionData.getExtendedSubject());
+        assertEquals("couldn't have run furiously ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("couldn't have run furiously ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("furiously towards goalie ", semanticExtractionData.getExtendedNounPredicate());
     }
 }

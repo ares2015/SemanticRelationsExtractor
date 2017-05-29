@@ -88,10 +88,11 @@ public class VerbPredicateExtractorTest {
         SemanticPreprocessingData semanticPreprocessingData = new SemanticPreprocessingData();
         semanticPreprocessingData.setTokensList(tokens);
         semanticPreprocessingData.setTagsList(tags);
-        semanticPreprocessingData.setHaveBeenSequenceStartIndex(1);
+        semanticPreprocessingData.setHaveVerbEdSequenceStartIndex(1);
+        semanticPreprocessingData.setHaveVerbEdSequenceEndIndex(2);
         semanticPreprocessingData.setVerbIndex(1);
         verbPredicateExtractor.extract(semanticExtractionData, semanticPreprocessingData);
-        assertEquals("has played very badly ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("has played ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("has played", semanticExtractionData.getAtomicVerbPredicate());
     }
 }

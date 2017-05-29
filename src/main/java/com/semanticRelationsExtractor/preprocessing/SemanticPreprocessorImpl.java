@@ -1,9 +1,7 @@
 package com.semanticRelationsExtractor.preprocessing;
 
 import com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache;
-import com.semanticRelationsExtractor.data.FilteredSentence;
-import com.semanticRelationsExtractor.data.HaveBeenSequenceIndexes;
-import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
+import com.semanticRelationsExtractor.data.*;
 import com.semanticRelationsExtractor.tags.Tags;
 
 import java.util.ArrayList;
@@ -37,18 +35,27 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         List<String> filteredTokens = filteredSentence.getFilteredTokens();
 
         HaveBeenSequenceIndexes haveBeenSequenceIndexes = findHaveBeenSequenceStartEndIndexes(filteredTags);
+        HaveVerbEdSequenceIndexes haveVerbEdSequenceIndexes = new HaveVerbEdSequenceIndexes();
+        DoVerbSequenceIndexes doVerbSequenceIndexes = new DoVerbSequenceIndexes();
 
-        mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
+        if (haveBeenSequenceIndexes.getStartIndex() == -1) {
+            haveVerbEdSequenceIndexes = findHaveVerbEdSequenceStartEndIndexes(filteredTags);
+            if (haveVerbEdSequenceIndexes.getStartIndex() == -1) {
+                doVerbSequenceIndexes = findDoVerbSequenceStartEndIndexes(filteredTags);
+            }
+        }
+
+        mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
         if (mainVerbIndex == -1) {
-            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE_NOT);
+            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
             if (mainVerbIndex == -1) {
                 mainVerbIndex = findMainVerbIndex(filteredTags, Tags.DO);
                 if (mainVerbIndex == -1) {
                     mainVerbIndex = findMainVerbIndex(filteredTags, Tags.DO_NOT);
                     if (mainVerbIndex == -1) {
-                        mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB);
+                        mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE);
                         if (mainVerbIndex == -1) {
-                            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.VERB_ED);
+                            mainVerbIndex = findMainVerbIndex(filteredTags, Tags.HAVE_NOT);
                             if (mainVerbIndex == -1) {
                                 return semanticPreprocessingData;
                             }
@@ -92,6 +99,10 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
             semanticPreprocessingData.setContainsBeforeVerbPreposition(containsBeforeVerbPreposition);
             semanticPreprocessingData.setHaveBeenSequenceStartIndex(haveBeenSequenceIndexes.getStartIndex());
             semanticPreprocessingData.setHaveBeenSequenceEndIndex(haveBeenSequenceIndexes.getEndIndex());
+            semanticPreprocessingData.setHaveVerbEdSequenceStartIndex(haveVerbEdSequenceIndexes.getStartIndex());
+            semanticPreprocessingData.setHaveVerbEdSequenceEndIndex(haveVerbEdSequenceIndexes.getEndIndex());
+            semanticPreprocessingData.setDoVerbSequenceStartIndex(doVerbSequenceIndexes.getStartIndex());
+            semanticPreprocessingData.setDoVerbSequenceEndIndex(doVerbSequenceIndexes.getEndIndex());
             semanticPreprocessingData.setVerbIndex(mainVerbIndex);
             semanticPreprocessingData.setModalVerbIndex(modalVerbIndex);
             semanticPreprocessingData.setAfterVerbFirstPrepositionIndex(afterVerbFirstPrepositionIndex);
@@ -153,18 +164,91 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
     private HaveBeenSequenceIndexes findHaveBeenSequenceStartEndIndexes(List<String> tags) {
         int startIndex = -1;
         int endIndex = -1;
-        for (int i = 0; i < tags.size() - 1; i++) {
+        for (int i = 0; i <= tags.size() - 1; i++) {
             String tag1 = tags.get(i);
-            String tag2 = tags.get(i + 1);
-            if ((Tags.HAVE.equals(tag1) || Tags.HAVE_NOT.equals(tag1)) && (Tags.IS_ARE.equals(tag2) || Tags.VERB_ED.equals(tag2))) {
+            String tag2 = "";
+            if (i + 1 < tags.size() - 1) {
+                tag2 = tags.get(i + 1);
+            }
+            String tag3 = "";
+            if (i + 2 < tags.size() - 1) {
+                tag3 = tags.get(i + 2);
+            }
+            if (isHaveBeenSequence(tag1, tag2, tag3)) {
                 startIndex = i;
                 continue;
             }
             if (startIndex > -1 && !Tags.IS_ARE.equals(tag1) && !Tags.VERB_ED.equals(tag1)) {
                 endIndex = i;
+                break;
             }
         }
         return new HaveBeenSequenceIndexes(startIndex, endIndex);
+    }
+
+    private HaveVerbEdSequenceIndexes findHaveVerbEdSequenceStartEndIndexes(List<String> tags) {
+        int startIndex = -1;
+        int endIndex = -1;
+        for (int i = 0; i <= tags.size() - 1; i++) {
+            String tag1 = tags.get(i);
+            String tag2 = "";
+            if (i + 1 < tags.size() - 1) {
+                tag2 = tags.get(i + 1);
+            }
+            String tag3 = "";
+            if (i + 2 < tags.size() - 1) {
+                tag3 = tags.get(i + 2);
+            }
+            if (isHaveBeenSequence(tag1, tag2, tag3)) {
+                startIndex = i;
+                continue;
+            }
+            if (startIndex > -1 && !Tags.VERB_ED.equals(tag1)) {
+                endIndex = i;
+                break;
+            }
+        }
+        return new HaveVerbEdSequenceIndexes(startIndex, endIndex);
+    }
+
+    private boolean isHaveBeenSequence(String tag1, String tag2, String tag3) {
+        return ((Tags.HAVE.equals(tag1) || Tags.HAVE_NOT.equals(tag1)) && (Tags.IS_ARE.equals(tag2) || Tags.VERB_ED.equals(tag2)))
+                || (Tags.HAVE.equals(tag1)) && (Tags.NOT.equals(tag2) && Tags.VERB_ED.equals(tag3));
+    }
+
+    private boolean isHaveVerbEdSequence(String tag1, String tag2, String tag3) {
+        return ((Tags.HAVE.equals(tag1) || Tags.HAVE_NOT.equals(tag1)) && (Tags.VERB_ED.equals(tag2)))
+                || (Tags.HAVE.equals(tag1)) && (Tags.NOT.equals(tag2) && Tags.VERB_ED.equals(tag3));
+    }
+
+    private DoVerbSequenceIndexes findDoVerbSequenceStartEndIndexes(List<String> tags) {
+        int startIndex = -1;
+        int endIndex = -1;
+        for (int i = 0; i <= tags.size() - 1; i++) {
+            String tag1 = tags.get(i);
+            String tag2 = "";
+            if (i + 1 < tags.size() - 1) {
+                tag2 = tags.get(i + 1);
+            }
+            String tag3 = "";
+            if (i + 2 < tags.size() - 1) {
+                tag3 = tags.get(i + 2);
+            }
+            if (isDoVerbSequence(tag1, tag2, tag3)) {
+                startIndex = i;
+                continue;
+            }
+            if (startIndex > -1 && !Tags.VERB.equals(tag1)) {
+                endIndex = i;
+                break;
+            }
+        }
+        return new DoVerbSequenceIndexes(startIndex, endIndex);
+    }
+
+    private boolean isDoVerbSequence(String tag1, String tag2, String tag3) {
+        return ((Tags.DO.equals(tag1) || Tags.DO_NOT.equals(tag1)) && (Tags.VERB.equals(tag2)))
+                || (Tags.DO.equals(tag1)) && (Tags.NOT.equals(tag2) && Tags.VERB.equals(tag3));
     }
 
     private int findMainVerbIndex(List<String> tags, String verbTag) {
