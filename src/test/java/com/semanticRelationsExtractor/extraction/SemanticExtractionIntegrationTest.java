@@ -2,10 +2,12 @@ package com.semanticRelationsExtractor.extraction;
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
-import com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractor;
-import com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractorImpl;
-import com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractor;
-import com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractor;
+import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractorImpl;
 import com.semanticRelationsExtractor.extraction.subject.SubjectExtractor;
 import com.semanticRelationsExtractor.extraction.subject.SubjectExtractorImpl;
 import com.semanticRelationsExtractor.preprocessing.SemanticPreprocessor;
@@ -25,7 +27,9 @@ public class SemanticExtractionIntegrationTest {
 
     private SubjectExtractor subjectExtractor = new SubjectExtractorImpl();
 
-    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl();
+    private SequenceExtractor sequenceExtractor = new SequenceExtractorImpl();
+
+    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl(sequenceExtractor);
 
     private NounPredicateExtractor nounPredicateExtractor = new NounPredicateExtractorImpl();
 
@@ -133,8 +137,8 @@ public class SemanticExtractionIntegrationTest {
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("earth", semanticExtractionData.getAtomicSubject());
         assertEquals("", semanticExtractionData.getExtendedSubject());
-        assertEquals("has been", semanticExtractionData.getAtomicVerbPredicate());
-        assertEquals("has been shaken ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("has been ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("has been ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("shaken", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("", semanticExtractionData.getExtendedNounPredicate());
     }
@@ -198,7 +202,7 @@ public class SemanticExtractionIntegrationTest {
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("Mary", semanticExtractionData.getAtomicSubject());
         assertEquals("Mary ", semanticExtractionData.getExtendedSubject());
-        assertEquals("didn't go", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("didn't go ", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("didn't go ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("to school ", semanticExtractionData.getExtendedNounPredicate());
@@ -214,7 +218,7 @@ public class SemanticExtractionIntegrationTest {
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("Mary", semanticExtractionData.getAtomicSubject());
         assertEquals("Mary ", semanticExtractionData.getExtendedSubject());
-        assertEquals("didn't buy", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("didn't buy ", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("didn't buy ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("milk", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("milk ", semanticExtractionData.getExtendedNounPredicate());
@@ -246,7 +250,7 @@ public class SemanticExtractionIntegrationTest {
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("Ronaldo", semanticExtractionData.getAtomicSubject());
         assertEquals("", semanticExtractionData.getExtendedSubject());
-        assertEquals("couldn't have run furiously ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("couldn't have run ", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("couldn't have run furiously ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("furiously towards goalie ", semanticExtractionData.getExtendedNounPredicate());

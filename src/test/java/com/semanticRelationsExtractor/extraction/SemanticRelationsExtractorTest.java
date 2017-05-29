@@ -2,10 +2,12 @@ package com.semanticRelationsExtractor.extraction;
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
-import com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractor;
-import com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractorImpl;
-import com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractor;
-import com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractor;
+import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractorImpl;
 import com.semanticRelationsExtractor.extraction.subject.SubjectExtractor;
 import com.semanticRelationsExtractor.extraction.subject.SubjectExtractorImpl;
 import com.semanticRelationsExtractor.tags.Tags;
@@ -24,7 +26,9 @@ public class SemanticRelationsExtractorTest {
 
     private SubjectExtractor subjectExtractor = new SubjectExtractorImpl();
 
-    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl();
+    private SequenceExtractor sequenceExtractor = new SequenceExtractorImpl();
+
+    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl(sequenceExtractor);
 
     private NounPredicateExtractor nounPredicateExtractor = new NounPredicateExtractorImpl();
 
@@ -88,7 +92,7 @@ public class SemanticRelationsExtractorTest {
         semanticPreprocessingData.setModalVerbIndex(3);
         SemanticExtractionData semanticExtractionData = semanticRelationsExtractor.extract(semanticPreprocessingData);
         assertEquals("Members of Fragile ", semanticExtractionData.getExtendedSubject());
-        assertEquals("can sing absolutely perfectly ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("can sing ", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("can sing absolutely perfectly ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("absolutely perfectly before audience ", semanticExtractionData.getExtendedNounPredicate());
         assertEquals("", semanticExtractionData.getAtomicNounPredicate());

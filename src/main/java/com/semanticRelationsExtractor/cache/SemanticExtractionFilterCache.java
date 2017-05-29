@@ -12,9 +12,23 @@ public final class SemanticExtractionFilterCache {
 
     public static final Set<String> semanticExtractionAllowedTags = new HashSet<>();
 
-    public static final Set<String> sequenceVerbPredicateExtractionAllowedTags = new HashSet<>();
+    public static final Set<String> haveBeenSequenceAtomicAllowedTags = new HashSet<>();
 
-    public static final Set<String> extendedVerbPredicateExtractionAllowedTags = new HashSet<>();
+    public static final Set<String> haveBeenSequenceExtendedAllowedTags = new HashSet<>();
+
+    public static final Set<String> haveVerbEdSequenceAtomicAllowedTags = new HashSet<>();
+
+    public static final Set<String> haveVerbEdSequenceExtendedAllowedTags = new HashSet<>();
+
+    public static final Set<String> modalVerbSequenceAtomicAllowedTags = new HashSet<>();
+
+    public static final Set<String> modalVerbSequenceExtendedAllowedTags = new HashSet<>();
+
+    public static final Set<String> doVerbSequenceAtomicAllowedTags = new HashSet<>();
+
+    public static final Set<String> doVerbSequenceExtendedAllowedTags = new HashSet<>();
+
+    public static final Set<String> simpleVerbSequenceExtendedAllowedTags = new HashSet<>();
 
     public static final Set<String> subjectNounPredicateExtractionAllowedTags = new HashSet<>();
 
@@ -25,6 +39,7 @@ public final class SemanticExtractionFilterCache {
 
 
     static {
+
         semanticExtractionAllowedTags.add(Tags.ADJECTIVE);
         semanticExtractionAllowedTags.add(Tags.ADVERB);
         semanticExtractionAllowedTags.add(Tags.DETERMINER);
@@ -48,28 +63,87 @@ public final class SemanticExtractionFilterCache {
         semanticExtractionAllowedTags.add(Tags.VERB_ING);
         semanticExtractionAllowedTags.add(Tags.VERB_ED);
 
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.HAVE);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.HAVE_NOT);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.VERB);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.VERB_ED);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.MODAL_VERB);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.MODAL_VERB_NOT);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE_NOT);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.NOT);
-        extendedVerbPredicateExtractionAllowedTags.add(Tags.ADVERB);
 
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.DO);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.DO_NOT);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.HAVE);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.HAVE_NOT);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.IS_ARE_NOT);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.NOT);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.ADJECTIVE);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.VERB);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.VERB_ED);
-        sequenceVerbPredicateExtractionAllowedTags.add(Tags.ADVERB);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.HAVE);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.HAVE_NOT);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.VERB);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.VERB_ED);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.IS_ARE);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.IS_ARE_NOT);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.DO);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.DO_NOT);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.NOT);
+        simpleVerbSequenceExtendedAllowedTags.add(Tags.ADVERB);
+
+        modalVerbSequenceAtomicAllowedTags.add(Tags.MODAL_VERB);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.MODAL_VERB_NOT);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.NOT);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.DO);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.DO_NOT);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.IS_ARE);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.IS_ARE_NOT);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.VERB);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.VERB_ED);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.VERB_ING);
+        modalVerbSequenceAtomicAllowedTags.add(Tags.HAVE);
+
+
+        modalVerbSequenceExtendedAllowedTags.add(Tags.MODAL_VERB);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.MODAL_VERB_NOT);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.NOT);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.DO);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.DO_NOT);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.IS_ARE);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.IS_ARE_NOT);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.VERB);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.VERB_ED);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.VERB_ING);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.ADVERB);
+        modalVerbSequenceExtendedAllowedTags.add(Tags.HAVE);
+
+        haveBeenSequenceAtomicAllowedTags.add(Tags.HAVE);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.HAVE_NOT);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.NOT);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.IS_ARE);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.IS_ARE_NOT);
+
+        haveBeenSequenceAtomicAllowedTags.add(Tags.HAVE);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.HAVE_NOT);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.NOT);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.IS_ARE);
+        haveBeenSequenceAtomicAllowedTags.add(Tags.IS_ARE_NOT);
+
+
+        haveBeenSequenceExtendedAllowedTags.add(Tags.HAVE);
+        haveBeenSequenceExtendedAllowedTags.add(Tags.HAVE_NOT);
+        haveBeenSequenceExtendedAllowedTags.add(Tags.NOT);
+        haveBeenSequenceExtendedAllowedTags.add(Tags.IS_ARE);
+        haveBeenSequenceExtendedAllowedTags.add(Tags.IS_ARE_NOT);
+        haveBeenSequenceExtendedAllowedTags.add(Tags.ADVERB);
+
+        haveVerbEdSequenceAtomicAllowedTags.add(Tags.HAVE);
+        haveVerbEdSequenceAtomicAllowedTags.add(Tags.HAVE_NOT);
+        haveVerbEdSequenceAtomicAllowedTags.add(Tags.NOT);
+        haveVerbEdSequenceAtomicAllowedTags.add(Tags.VERB_ED);
+
+        haveVerbEdSequenceExtendedAllowedTags.add(Tags.HAVE);
+        haveVerbEdSequenceExtendedAllowedTags.add(Tags.HAVE_NOT);
+        haveVerbEdSequenceExtendedAllowedTags.add(Tags.NOT);
+        haveVerbEdSequenceExtendedAllowedTags.add(Tags.VERB_ED);
+        haveVerbEdSequenceExtendedAllowedTags.add(Tags.ADVERB);
+
+
+        doVerbSequenceAtomicAllowedTags.add(Tags.DO);
+        doVerbSequenceAtomicAllowedTags.add(Tags.DO_NOT);
+        doVerbSequenceAtomicAllowedTags.add(Tags.VERB);
+
+        doVerbSequenceExtendedAllowedTags.add(Tags.DO);
+        doVerbSequenceExtendedAllowedTags.add(Tags.DO_NOT);
+        doVerbSequenceExtendedAllowedTags.add(Tags.VERB);
+        doVerbSequenceExtendedAllowedTags.add(Tags.ADVERB);
+
+
+
 
         subjectNounPredicateExtractionAllowedTags.add(Tags.ADJECTIVE);
         subjectNounPredicateExtractionAllowedTags.add(Tags.CONJUNCTION);

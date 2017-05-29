@@ -2,8 +2,8 @@ package com.semanticRelationsExtractor.extraction;
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
-import com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractor;
-import com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractorImpl;
 import com.semanticRelationsExtractor.tags.Tags;
 import org.junit.Test;
 

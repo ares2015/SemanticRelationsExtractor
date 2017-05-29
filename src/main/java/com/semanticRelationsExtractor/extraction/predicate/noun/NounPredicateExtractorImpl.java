@@ -1,4 +1,4 @@
-package com.semanticRelationsExtractor.extraction.predicate;
+package com.semanticRelationsExtractor.extraction.predicate.noun;
 
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;

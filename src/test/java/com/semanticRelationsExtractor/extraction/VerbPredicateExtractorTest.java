@@ -2,8 +2,10 @@ package com.semanticRelationsExtractor.extraction;
 
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
-import com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractor;
-import com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractor;
+import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractorImpl;
 import com.semanticRelationsExtractor.tags.Tags;
 import org.junit.Test;
 
@@ -18,7 +20,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class VerbPredicateExtractorTest {
 
-    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl();
+    private SequenceExtractor sequenceExtractor = new SequenceExtractorImpl();
+
+
+    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl(sequenceExtractor);
 
     @Test
     public void test() {
@@ -45,7 +50,7 @@ public class VerbPredicateExtractorTest {
         semanticPreprocessingData.setModalVerbIndex(1);
         verbPredicateExtractor.extract(semanticExtractionData, semanticPreprocessingData);
         assertEquals("can run very quickly ", semanticExtractionData.getExtendedVerbPredicate());
-        assertEquals("can run very quickly ", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("can run ", semanticExtractionData.getAtomicVerbPredicate());
     }
 
     @Test
@@ -68,8 +73,8 @@ public class VerbPredicateExtractorTest {
         semanticPreprocessingData.setHaveBeenSequenceStartIndex(1);
         semanticPreprocessingData.setVerbIndex(1);
         verbPredicateExtractor.extract(semanticExtractionData, semanticPreprocessingData);
-        assertEquals("has been injured very badly ", semanticExtractionData.getExtendedVerbPredicate());
-        assertEquals("has been", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("has been ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("has been ", semanticExtractionData.getAtomicVerbPredicate());
     }
 
     @Test
@@ -92,7 +97,7 @@ public class VerbPredicateExtractorTest {
         semanticPreprocessingData.setHaveVerbEdSequenceEndIndex(2);
         semanticPreprocessingData.setVerbIndex(1);
         verbPredicateExtractor.extract(semanticExtractionData, semanticPreprocessingData);
-        assertEquals("has played ", semanticExtractionData.getExtendedVerbPredicate());
-        assertEquals("has played", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("has played very badly ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("has played ", semanticExtractionData.getAtomicVerbPredicate());
     }
 }

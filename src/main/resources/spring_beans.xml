@@ -39,11 +39,15 @@
 
     <bean id="subjectExtractor" class="com.semanticRelationsExtractor.extraction.subject.SubjectExtractorImpl"/>
 
+    <bean id="sequenceExtractor" class="com.semanticRelationsExtractor.extraction.sequence.SequenceExtractorImpl"/>
+
     <bean id="verbPredicateExtractor"
-          class="com.semanticRelationsExtractor.extraction.predicate.VerbPredicateExtractorImpl"/>
+          class="com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractorImpl">
+        <constructor-arg ref="sequenceExtractor"/>
+    </bean>
 
     <bean id="nounPredicateExtractor"
-          class="com.semanticRelationsExtractor.extraction.predicate.NounPredicateExtractorImpl"/>
+          class="com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractorImpl"/>
 
     <bean id="semanticRelationsExtractor"
           class="com.semanticRelationsExtractor.extraction.SemanticRelationsExtractorImpl">

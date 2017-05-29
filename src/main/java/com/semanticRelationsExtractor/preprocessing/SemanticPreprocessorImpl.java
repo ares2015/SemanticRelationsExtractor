@@ -161,6 +161,9 @@ public class SemanticPreprocessorImpl implements SemanticPreprocessor {
         return new FilteredSentence(filteredTags, filteredTokens);
     }
 
+    /*
+    have been
+     */
     private HaveBeenSequenceIndexes findHaveBeenSequenceStartEndIndexes(List<String> tags) {
         int startIndex = -1;
         int endIndex = -1;

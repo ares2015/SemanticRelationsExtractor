@@ -1,7 +1,7 @@
 package com.semanticRelationsExtractor.data;
 
 /**
- * Created by oled on 5/29/2017.
+ * Created by Oliver on 5/29/2017.
  */
 public class DoVerbSequenceIndexes {
 
