@@ -17,6 +17,8 @@ public final class SemanticExtractionData {
 
     private String extendedNounPredicate = "";
 
+    private String prepositionPredicate = "";
+
     private boolean isNegativeVerbPredicate;
 
     public String getAtomicSubject() {
@@ -65,6 +67,14 @@ public final class SemanticExtractionData {
 
     public void setExtendedNounPredicate(String extendedNounPredicate) {
         this.extendedNounPredicate = extendedNounPredicate;
+    }
+
+    public String getPrepositionPredicate() {
+        return prepositionPredicate;
+    }
+
+    public void setPrepositionPredicate(String prepositionPredicate) {
+        this.prepositionPredicate = prepositionPredicate;
     }
 
     public boolean isNegativeVerbPredicate() {

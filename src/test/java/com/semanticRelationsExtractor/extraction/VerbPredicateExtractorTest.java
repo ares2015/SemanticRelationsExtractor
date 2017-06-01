@@ -4,8 +4,8 @@ import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractor;
 import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractorImpl;
-import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractor;
-import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.verb.sequence.VerbPredicateSequenceExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.verb.sequence.VerbPredicateSequenceExtractorImpl;
 import com.semanticRelationsExtractor.tags.Tags;
 import org.junit.Test;
 
@@ -20,10 +20,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class VerbPredicateExtractorTest {
 
-    private SequenceExtractor sequenceExtractor = new SequenceExtractorImpl();
+    private VerbPredicateSequenceExtractor verbPredicateSequenceExtractor = new VerbPredicateSequenceExtractorImpl();
 
 
-    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl(sequenceExtractor);
+    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl(verbPredicateSequenceExtractor);
 
     @Test
     public void test() {

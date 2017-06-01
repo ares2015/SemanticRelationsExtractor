@@ -3,7 +3,7 @@ package com.semanticRelationsExtractor.extraction.predicate.verb;
 import com.semanticRelationsExtractor.cache.SemanticExtractionFilterCache;
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
-import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.verb.sequence.VerbPredicateSequenceExtractor;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -17,10 +17,10 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
 
     private final static Logger LOGGER = Logger.getLogger(VerbPredicateExtractorImpl.class.getName());
 
-    private SequenceExtractor sequenceExtractor;
+    private VerbPredicateSequenceExtractor verbPredicateSequenceExtractor;
 
-    public VerbPredicateExtractorImpl(SequenceExtractor sequenceExtractor) {
-        this.sequenceExtractor = sequenceExtractor;
+    public VerbPredicateExtractorImpl(VerbPredicateSequenceExtractor verbPredicateSequenceExtractor) {
+        this.verbPredicateSequenceExtractor = verbPredicateSequenceExtractor;
     }
 
     @Override
@@ -36,36 +36,36 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
         int haveVerbEdSequenceStartIndex = semanticPreprocessingData.getHaveVerbEdSequenceStartIndex();
         int doVerbSequenceStartIndex = semanticPreprocessingData.getDoVerbSequenceStartIndex();
         if (modalVerbIndex > -1) {
-            atomicPredicate = sequenceExtractor.extract(tokensList, tagsList, modalVerbIndex, SemanticExtractionFilterCache.modalVerbSequenceAtomicAllowedTags);
-            extendedPredicate = sequenceExtractor.extract(tokensList, tagsList, modalVerbIndex, SemanticExtractionFilterCache.modalVerbSequenceExtendedAllowedTags);
+            atomicPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, modalVerbIndex, SemanticExtractionFilterCache.modalVerbSequenceAtomicAllowedTags);
+            extendedPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, modalVerbIndex, SemanticExtractionFilterCache.modalVerbSequenceExtendedAllowedTags);
             semanticExtractionData.setAtomicVerbPredicate(atomicPredicate);
             semanticExtractionData.setExtendedVerbPredicate(extendedPredicate);
             isNegativeVerbPredicate = isNegativeVerbPredicate(modalVerbIndex, tagsList);
             semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
         } else if (haveBeenSequenceStartIndex > -1) {
-            atomicPredicate = sequenceExtractor.extract(tokensList, tagsList, haveBeenSequenceStartIndex, SemanticExtractionFilterCache.haveBeenSequenceAtomicAllowedTags);
-            extendedPredicate = sequenceExtractor.extract(tokensList, tagsList, haveBeenSequenceStartIndex, SemanticExtractionFilterCache.haveBeenSequenceExtendedAllowedTags);
+            atomicPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, haveBeenSequenceStartIndex, SemanticExtractionFilterCache.haveBeenSequenceAtomicAllowedTags);
+            extendedPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, haveBeenSequenceStartIndex, SemanticExtractionFilterCache.haveBeenSequenceExtendedAllowedTags);
             semanticExtractionData.setAtomicVerbPredicate(atomicPredicate);
             semanticExtractionData.setExtendedVerbPredicate(extendedPredicate);
             isNegativeVerbPredicate = isNegativeVerbPredicate(haveBeenSequenceStartIndex, tagsList);
             semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
         } else if (haveVerbEdSequenceStartIndex > -1) {
-            atomicPredicate = sequenceExtractor.extract(tokensList, tagsList, haveVerbEdSequenceStartIndex, SemanticExtractionFilterCache.haveVerbEdSequenceAtomicAllowedTags);
-            extendedPredicate = sequenceExtractor.extract(tokensList, tagsList, haveVerbEdSequenceStartIndex, SemanticExtractionFilterCache.haveVerbEdSequenceExtendedAllowedTags);
+            atomicPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, haveVerbEdSequenceStartIndex, SemanticExtractionFilterCache.haveVerbEdSequenceAtomicAllowedTags);
+            extendedPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, haveVerbEdSequenceStartIndex, SemanticExtractionFilterCache.haveVerbEdSequenceExtendedAllowedTags);
             semanticExtractionData.setAtomicVerbPredicate(atomicPredicate);
             semanticExtractionData.setExtendedVerbPredicate(extendedPredicate);
             isNegativeVerbPredicate = isNegativeVerbPredicate(haveVerbEdSequenceStartIndex, tagsList);
             semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
         } else if (doVerbSequenceStartIndex > -1) {
-            atomicPredicate = sequenceExtractor.extract(tokensList, tagsList, doVerbSequenceStartIndex, SemanticExtractionFilterCache.doVerbSequenceAtomicAllowedTags);
-            extendedPredicate = sequenceExtractor.extract(tokensList, tagsList, doVerbSequenceStartIndex, SemanticExtractionFilterCache.doVerbSequenceExtendedAllowedTags);
+            atomicPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, doVerbSequenceStartIndex, SemanticExtractionFilterCache.doVerbSequenceAtomicAllowedTags);
+            extendedPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, doVerbSequenceStartIndex, SemanticExtractionFilterCache.doVerbSequenceExtendedAllowedTags);
             semanticExtractionData.setAtomicVerbPredicate(atomicPredicate);
             semanticExtractionData.setExtendedVerbPredicate(extendedPredicate);
             isNegativeVerbPredicate = isNegativeVerbPredicate(doVerbSequenceStartIndex, tagsList);
             semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
         } else {
             atomicPredicate = tokensList.get(verbIndex);
-            extendedPredicate = sequenceExtractor.extract(tokensList, tagsList, verbIndex, SemanticExtractionFilterCache.simpleVerbSequenceExtendedAllowedTags);
+            extendedPredicate = verbPredicateSequenceExtractor.extract(tokensList, tagsList, verbIndex, SemanticExtractionFilterCache.simpleVerbSequenceExtendedAllowedTags);
             semanticExtractionData.setAtomicVerbPredicate(atomicPredicate);
             semanticExtractionData.setExtendedVerbPredicate(extendedPredicate);
             isNegativeVerbPredicate = isNegativeVerbPredicate(verbIndex, tagsList);

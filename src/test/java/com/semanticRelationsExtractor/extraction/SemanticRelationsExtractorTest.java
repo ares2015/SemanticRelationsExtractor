@@ -4,10 +4,12 @@ import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractor;
 import com.semanticRelationsExtractor.extraction.predicate.noun.NounPredicateExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.preposition.PrepositionPredicateExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.preposition.PrepositionPredicateExtractorImpl;
 import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractor;
 import com.semanticRelationsExtractor.extraction.predicate.verb.VerbPredicateExtractorImpl;
-import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractor;
-import com.semanticRelationsExtractor.extraction.sequence.SequenceExtractorImpl;
+import com.semanticRelationsExtractor.extraction.predicate.verb.sequence.VerbPredicateSequenceExtractor;
+import com.semanticRelationsExtractor.extraction.predicate.verb.sequence.VerbPredicateSequenceExtractorImpl;
 import com.semanticRelationsExtractor.extraction.subject.SubjectExtractor;
 import com.semanticRelationsExtractor.extraction.subject.SubjectExtractorImpl;
 import com.semanticRelationsExtractor.tags.Tags;
@@ -26,13 +28,16 @@ public class SemanticRelationsExtractorTest {
 
     private SubjectExtractor subjectExtractor = new SubjectExtractorImpl();
 
-    private SequenceExtractor sequenceExtractor = new SequenceExtractorImpl();
+    private VerbPredicateSequenceExtractor verbPredicateSequenceExtractor = new VerbPredicateSequenceExtractorImpl();
 
-    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl(sequenceExtractor);
+    private VerbPredicateExtractor verbPredicateExtractor = new VerbPredicateExtractorImpl(verbPredicateSequenceExtractor);
 
     private NounPredicateExtractor nounPredicateExtractor = new NounPredicateExtractorImpl();
 
-    private SemanticRelationsExtractor semanticRelationsExtractor = new SemanticRelationsExtractorImpl(subjectExtractor, verbPredicateExtractor, nounPredicateExtractor);
+    private PrepositionPredicateExtractor prepositionPredicateExtractor = new PrepositionPredicateExtractorImpl();
+
+    private SemanticRelationsExtractor semanticRelationsExtractor = new SemanticRelationsExtractorImpl(subjectExtractor, verbPredicateExtractor,
+            nounPredicateExtractor, prepositionPredicateExtractor);
 
     @Test
     public void testWithAfterPreposition() {
