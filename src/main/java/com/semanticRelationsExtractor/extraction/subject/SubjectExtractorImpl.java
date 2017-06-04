@@ -27,7 +27,7 @@ public class SubjectExtractorImpl implements SubjectExtractor {
             LOGGER.info("Atomic subject: " + atomicSubject);
         }
         if (extractionEndIndex > 1) {
-            String extendedSubject = extractExtendedSubject(tokensList, tagsList);
+            String extendedSubject = extractExtendedSubject(tokensList, tagsList, extractionEndIndex);
             semanticExtractionData.setExtendedSubject(extendedSubject);
             LOGGER.info("Extended subject: " + extendedSubject);
         }
@@ -42,9 +42,9 @@ public class SubjectExtractorImpl implements SubjectExtractor {
         throw new IllegalStateException("There is no subject in the sentence");
     }
 
-    private String extractExtendedSubject(List<String> tokensList, List<String> tagsList) {
+    private String extractExtendedSubject(List<String> tokensList, List<String> tagsList, int extractionEndIndex) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < tagsList.size(); i++) {
+        for (int i = 0; i < extractionEndIndex; i++) {
             if (SemanticExtractionFilterCache.subjectNounPredicateExtractionAllowedTags.contains(tagsList.get(i))) {
                 stringBuilder.append(tokensList.get(i));
                 stringBuilder.append(" ");

@@ -23,7 +23,8 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
         int extractionStartIndex = getExtractionStartIndex(semanticPreprocessingData);
         int afterVerbPrepositionIndex = semanticPreprocessingData.getAfterVerbFirstPrepositionIndex();
         if (!semanticPreprocessingData.containsAfterVerbVerbIng()) {
-            String atomicNounPredicate = extractAtomicNounPredicate(tokensList, tagsList, extractionStartIndex, afterVerbPrepositionIndex);
+            String atomicNounPredicate = extractAtomicNounPredicate(tokensList, tagsList, extractionStartIndex,
+                    afterVerbPrepositionIndex, semanticPreprocessingData.getVerbIndex());
             semanticExtractionData.setAtomicNounPredicate(atomicNounPredicate);
             LOGGER.info("Atomic noun predicate: " + atomicNounPredicate);
         }
@@ -33,8 +34,8 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
     }
 
     private String extractAtomicNounPredicate(List<String> tokensList, List<String> encodedTagsList,
-                                              int extractionStartIndex, int afterVerbPrepositionIndex) {
-        int lastNounIndex = getLastNounVerbEdIndex(encodedTagsList, extractionStartIndex, afterVerbPrepositionIndex);
+                                              int extractionStartIndex, int afterVerbPrepositionIndex, int mainVerbIndex) {
+        int lastNounIndex = getLastNounVerbEdIndex(encodedTagsList, extractionStartIndex, afterVerbPrepositionIndex, mainVerbIndex);
         if (lastNounIndex > -1) {
             return tokensList.get(lastNounIndex);
         } else {
@@ -42,11 +43,12 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
         }
     }
 
-    private int getLastNounVerbEdIndex(List<String> encodedTagsList, int extractionStartIndex, int afterVerbPrepositionIndex) {
+    private int getLastNounVerbEdIndex(List<String> encodedTagsList, int extractionStartIndex, int afterVerbPrepositionIndex,
+                                       int mainVerbIndex) {
         int lastNounIndex = -1;
         if (afterVerbPrepositionIndex > -1) {
             for (int i = extractionStartIndex; i <= afterVerbPrepositionIndex; i++) {
-                if (Tags.NOUN.equals(encodedTagsList.get(i)) || Tags.VERB_ED.equals(encodedTagsList.get(i))) {
+                if (mainVerbIndex != i && (Tags.NOUN.equals(encodedTagsList.get(i)) || Tags.VERB_ED.equals(encodedTagsList.get(i)))) {
                     lastNounIndex = i;
                 }
             }

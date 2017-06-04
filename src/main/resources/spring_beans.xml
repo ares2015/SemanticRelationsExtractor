@@ -59,6 +59,7 @@
         <constructor-arg ref="subjectExtractor"/>
         <constructor-arg ref="verbPredicateExtractor"/>
         <constructor-arg ref="nounPredicateExtractor"/>
+        <constructor-arg ref="prepositionPredicateExtractor"/>
     </bean>
 
     <bean id="semanticExtractionProcessor"

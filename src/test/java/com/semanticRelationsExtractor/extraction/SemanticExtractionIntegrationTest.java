@@ -262,4 +262,21 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("furiously towards goalie ", semanticExtractionData.getExtendedNounPredicate());
     }
+
+    @Test
+    public void test15() {
+        String sentence = "On the 11th ten more heavy shells fell about Belfort";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "PR DET NR NR Q AJ N Ved PR N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("", semanticExtractionData.getAtomicSubject());
+
+        assertEquals("On 11th ten more heavy shells ", semanticExtractionData.getExtendedSubject());
+        assertEquals("fell", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("fell ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("about Belfort ", semanticExtractionData.getExtendedNounPredicate());
+    }
 }
