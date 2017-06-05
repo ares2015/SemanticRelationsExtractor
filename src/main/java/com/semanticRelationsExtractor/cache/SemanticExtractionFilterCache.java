@@ -67,7 +67,6 @@ public final class SemanticExtractionFilterCache {
         simpleVerbSequenceExtendedAllowedTags.add(Tags.HAVE);
         simpleVerbSequenceExtendedAllowedTags.add(Tags.HAVE_NOT);
         simpleVerbSequenceExtendedAllowedTags.add(Tags.VERB);
-        simpleVerbSequenceExtendedAllowedTags.add(Tags.VERB_ED);
         simpleVerbSequenceExtendedAllowedTags.add(Tags.IS_ARE);
         simpleVerbSequenceExtendedAllowedTags.add(Tags.IS_ARE_NOT);
         simpleVerbSequenceExtendedAllowedTags.add(Tags.DO);

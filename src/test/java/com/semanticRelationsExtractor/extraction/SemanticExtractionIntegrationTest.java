@@ -272,11 +272,26 @@ public class SemanticExtractionIntegrationTest {
         SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
         SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
         assertEquals("", semanticExtractionData.getAtomicSubject());
-
         assertEquals("On 11th ten more heavy shells ", semanticExtractionData.getExtendedSubject());
         assertEquals("fell", semanticExtractionData.getAtomicVerbPredicate());
         assertEquals("fell ", semanticExtractionData.getExtendedVerbPredicate());
         assertEquals("", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("about Belfort ", semanticExtractionData.getExtendedNounPredicate());
+    }
+
+    @Test
+    public void test16() {
+        String sentence = "Field Marshal Sir John French was relieved at his own instance and appointed to the command of the home forces";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "N N N N N IA Ved PR PRPS AJ N AO Ved TO DET N PR DET N N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("French", semanticExtractionData.getAtomicSubject());
+        assertEquals("Field Marshal Sir John French ", semanticExtractionData.getExtendedSubject());
+        assertEquals("was", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("was ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("relieved", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("relieved at own instance ", semanticExtractionData.getExtendedNounPredicate());
     }
 }

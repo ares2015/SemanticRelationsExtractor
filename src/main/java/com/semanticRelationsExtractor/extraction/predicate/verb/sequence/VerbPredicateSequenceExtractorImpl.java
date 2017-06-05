@@ -13,7 +13,10 @@ public class VerbPredicateSequenceExtractorImpl implements VerbPredicateSequence
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = sequenceStartIndex; i <= tagsList.size() - 1; i++) {
             String tag = tagsList.get(i);
-            if (allowedTags.contains(tag)) {
+            if (i == sequenceStartIndex) {
+                stringBuilder.append(tokensList.get(i));
+                stringBuilder.append(" ");
+            } else if (allowedTags.contains(tag)) {
                 stringBuilder.append(tokensList.get(i));
                 stringBuilder.append(" ");
             } else {
