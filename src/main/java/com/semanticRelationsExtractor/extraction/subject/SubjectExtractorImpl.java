@@ -35,7 +35,7 @@ public class SubjectExtractorImpl implements SubjectExtractor {
 
     private String extractAtomicSubject(List<String> tokensList, List<String> tagsList, int extractionEndIndex) {
         for (int i = extractionEndIndex; i >= 0; i--) {
-            if (Tags.NOUN.equals(tagsList.get(i)) || Tags.VERB_ED.equals(tagsList.get(i))) {
+            if (i != extractionEndIndex && (Tags.NOUN.equals(tagsList.get(i)) || Tags.VERB_ED.equals(tagsList.get(i)))) {
                 return tokensList.get(i);
             }
         }

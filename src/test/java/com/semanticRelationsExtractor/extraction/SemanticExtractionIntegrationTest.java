@@ -294,4 +294,20 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("relieved", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("relieved at own instance ", semanticExtractionData.getExtendedNounPredicate());
     }
+
+    @Test
+    public void test17() {
+        String sentence = "the guns vomited destruction and murder against the Germans";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "DET N Ved N AO N PR DET N";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("guns", semanticExtractionData.getAtomicSubject());
+        assertEquals("", semanticExtractionData.getExtendedSubject());
+        assertEquals("vomited", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("vomited ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("destruction", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("destruction ", semanticExtractionData.getExtendedNounPredicate());
+    }
 }
