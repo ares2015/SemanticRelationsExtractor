@@ -1,8 +1,8 @@
 package com.semanticRelationsExtractor.main;
 
-import com.postagger.main.PosTagger;
-import com.postagger.main.PosTaggerImpl;
-import com.semanticRelationsExtractor.data.InputData;
+//import com.postagger.main.PosTagger;
+//import com.postagger.main.PosTaggerImpl;
+
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.database.DatabaseInserter;
@@ -28,7 +28,7 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
     private CapitalizedTokensPreprocessor capitalizedTokensPreprocessor;
 
-    private PosTagger posTagger;
+//    private PosTagger posTagger;
 
     private SemanticPreprocessor semanticPreprocessor;
 
@@ -43,7 +43,7 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
         this.inputDataReader = inputDataReader;
         this.inputDataFactory = inputDataFactory;
         this.capitalizedTokensPreprocessor = capitalizedTokensPreprocessor;
-        this.posTagger = new PosTaggerImpl();
+//        this.posTagger = new PosTaggerImpl();
         this.semanticPreprocessor = semanticPreprocessor;
         this.semanticRelationsExtractor = semanticRelationsExtractor;
         this.databaseInserter = databaseInserter;
@@ -58,23 +58,23 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
     @Override
     public void process() throws InterruptedException {
-        List<String> inputDataStringList = inputDataReader.read();
-        for (String inputDataAsString : inputDataStringList) {
-            List<List<String>> tagSequencesMultiList = posTagger.tag(inputDataAsString);
-            InputData inputData = inputDataFactory.create(inputDataAsString, tagSequencesMultiList);
-            capitalizedTokensPreprocessor.process(inputData);
-            if (inputData.containsSubSentences()) {
-                for (int i = 0; i <= inputData.getTokensMultiList().size() - 1; i++) {
-                    List<String> tokensList = inputData.getTokensMultiList().get(i);
-                    List<String> tagsList = inputData.getTagsMultiList().get(i);
-                    processSentence(tokensList, tagsList);
-                }
-            } else {
-                List<String> tagsList = inputData.getTagsList();
-                List<String> tokensList = inputData.getTokensList();
-                processSentence(tokensList, tagsList);
-            }
-        }
+//        List<String> inputDataStringList = inputDataReader.read();
+//        for (String inputDataAsString : inputDataStringList) {
+//            List<List<String>> tagSequencesMultiList = posTagger.tag(inputDataAsString);
+//            InputData inputData = inputDataFactory.create(inputDataAsString, tagSequencesMultiList);
+//            capitalizedTokensPreprocessor.process(inputData);
+//            if (inputData.containsSubSentences()) {
+//                for (int i = 0; i <= inputData.getTokensMultiList().size() - 1; i++) {
+//                    List<String> tokensList = inputData.getTokensMultiList().get(i);
+//                    List<String> tagsList = inputData.getTagsMultiList().get(i);
+//                    processSentence(tokensList, tagsList);
+//                }
+//            } else {
+//                List<String> tagsList = inputData.getTagsList();
+//                List<String> tokensList = inputData.getTokensList();
+//                processSentence(tokensList, tagsList);
+//            }
+//        }
     }
 
 

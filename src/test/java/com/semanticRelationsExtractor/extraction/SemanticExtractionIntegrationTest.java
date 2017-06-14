@@ -310,4 +310,20 @@ public class SemanticExtractionIntegrationTest {
         assertEquals("destruction", semanticExtractionData.getAtomicNounPredicate());
         assertEquals("destruction ", semanticExtractionData.getExtendedNounPredicate());
     }
+
+    @Test
+    public void test18() {
+        String sentence = "During the foundation of the German Empire in 1871 a large military facility called Albertstadt was built";
+        List<String> tokensList = Arrays.asList(sentence.split("\\ "));
+        String tags = "PR DET N PR DET N N PR NR DET AJ N N Ved N IA Ved";
+        List<String> tagsList = Arrays.asList(tags.split("\\ "));
+        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
+        SemanticExtractionData semanticExtractionData = semanticExtractor.extract(semanticPreprocessingData);
+        assertEquals("", semanticExtractionData.getAtomicSubject());
+        assertEquals("During foundation of German Empire in 1871 large military facility called Albertstadt ", semanticExtractionData.getExtendedSubject());
+        assertEquals("was", semanticExtractionData.getAtomicVerbPredicate());
+        assertEquals("was ", semanticExtractionData.getExtendedVerbPredicate());
+        assertEquals("built", semanticExtractionData.getAtomicNounPredicate());
+        assertEquals("built ", semanticExtractionData.getExtendedNounPredicate());
+    }
 }

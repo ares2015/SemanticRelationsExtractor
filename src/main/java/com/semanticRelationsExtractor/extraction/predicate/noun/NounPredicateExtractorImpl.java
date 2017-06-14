@@ -48,13 +48,15 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
         int lastNounIndex = -1;
         if (afterVerbPrepositionIndex > -1) {
             for (int i = extractionStartIndex; i <= afterVerbPrepositionIndex; i++) {
-                if (mainVerbIndex != i && (Tags.NOUN.equals(encodedTagsList.get(i)) || Tags.VERB_ED.equals(encodedTagsList.get(i)))) {
+                String tag = encodedTagsList.get(i);
+                if (mainVerbIndex != i && (Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag))) {
                     lastNounIndex = i;
                 }
             }
         } else {
             for (int i = extractionStartIndex + 1; i < encodedTagsList.size(); i++) {
-                if (Tags.NOUN.equals(encodedTagsList.get(i))) {
+                String tag = encodedTagsList.get(i);
+                if (Tags.NOUN.equals(tag) || Tags.VERB_ED.equals(tag)) {
                     lastNounIndex = i;
                 }
             }
