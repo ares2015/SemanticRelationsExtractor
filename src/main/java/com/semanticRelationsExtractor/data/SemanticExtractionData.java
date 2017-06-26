@@ -5,6 +5,10 @@ package com.semanticRelationsExtractor.data;
  */
 public final class SemanticExtractionData {
 
+    private String sentence;
+
+    private String object;
+
     private String atomicSubject = "";
 
     private String extendedSubject = "";
@@ -20,6 +24,22 @@ public final class SemanticExtractionData {
     private String prepositionPredicate = "";
 
     private boolean isNegativeVerbPredicate;
+
+    public String getSentence() {
+        return sentence;
+    }
+
+    public void setSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
+    public String getObject() {
+        return object;
+    }
+
+    public void setObject(String object) {
+        this.object = object;
+    }
 
     public String getAtomicSubject() {
         return atomicSubject;

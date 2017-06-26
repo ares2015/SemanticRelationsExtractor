@@ -30,8 +30,6 @@
         <constructor-arg ref="multiListFactory"/>
     </bean>
 
-    <bean id="inputDataReader" class="com.semanticRelationsExtractor.reader.InputDataReaderImpl"/>
-
     <bean id="capitalizedTokensPreprocessor"
           class="com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessorImpl"/>
 
@@ -64,7 +62,6 @@
 
     <bean id="semanticExtractionProcessor"
           class="com.semanticRelationsExtractor.main.SemanticExtractionProcessorImpl">
-        <constructor-arg ref="inputDataReader"/>
         <constructor-arg ref="inputDataFactory"/>
         <constructor-arg ref="capitalizedTokensPreprocessor"/>
         <constructor-arg ref="semanticPreprocessor"/>
