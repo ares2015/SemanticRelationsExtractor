@@ -95,7 +95,8 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
                     System.out.println(nrOfProcessedSentences + " were sentences read and processed");
                     inputDataString = br.readLine();
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+//                    System.out.println(e.toString());
+                    inputDataString = br.readLine();
                     continue;
                 }
             }
