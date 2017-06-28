@@ -26,11 +26,11 @@ public class NounPredicateExtractorImpl implements NounPredicateExtractor {
             String atomicNounPredicate = extractAtomicNounPredicate(tokensList, tagsList, extractionStartIndex,
                     afterVerbPrepositionIndex, semanticPreprocessingData.getVerbIndex());
             semanticExtractionData.setAtomicNounPredicate(atomicNounPredicate);
-            LOGGER.info("Atomic noun predicate: " + atomicNounPredicate);
+            //LOGGER.info("Atomic noun predicate: " + atomicNounPredicate);
         }
         String extendedNounPredicate = extractExtendedNounPredicate(tokensList, tagsList, extractionStartIndex);
         semanticExtractionData.setExtendedNounPredicate(extendedNounPredicate);
-        LOGGER.info("Extended noun predicate: " + extendedNounPredicate);
+        //LOGGER.info("Extended noun predicate: " + extendedNounPredicate);
     }
 
     private String extractAtomicNounPredicate(List<String> tokensList, List<String> encodedTagsList,

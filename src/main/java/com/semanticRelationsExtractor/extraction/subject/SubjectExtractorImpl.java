@@ -24,12 +24,12 @@ public class SubjectExtractorImpl implements SubjectExtractor {
             String atomicSubject = "";
             atomicSubject = extractAtomicSubject(tokensList, tagsList, extractionEndIndex);
             semanticExtractionData.setAtomicSubject(atomicSubject);
-            LOGGER.info("Atomic subject: " + atomicSubject);
+            //LOGGER.info("Atomic subject: " + atomicSubject);
         }
         if (extractionEndIndex > 1) {
             String extendedSubject = extractExtendedSubject(tokensList, tagsList, extractionEndIndex);
             semanticExtractionData.setExtendedSubject(extendedSubject);
-            LOGGER.info("Extended subject: " + extendedSubject);
+            //LOGGER.info("Extended subject: " + extendedSubject);
         }
     }
 

@@ -69,9 +69,11 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
             e.printStackTrace();
         }
         try {
+            int nrOfProcessedSentences = 0;
             String inputDataString = br.readLine();
             while (inputDataString != null) {
                 try {
+                    nrOfProcessedSentences++;
                     String[] split = inputDataString.split("#");
                     String sentence = split[0];
                     String object = split[1];
@@ -90,6 +92,7 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
                         List<String> tokensList = inputData.getTokensList();
                         processSentence(tokensList, tagsList, sentence, object);
                     }
+                    LOGGER.info(nrOfProcessedSentences + " were sentences read and processed");
                     inputDataString = br.readLine();
                 } catch (Exception e) {
                     LOGGER.info(e.getMessage());

@@ -64,6 +64,22 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
         long startTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
+//        SemanticExtractionExecutor semanticExtractionExecutor1 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor1Path);
+//        semanticExtractionExecutor1.execute();
+//
+//        SemanticExtractionExecutor semanticExtractionExecutor2 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor2Path);
+//        semanticExtractionExecutor2.execute();
+//
+//        SemanticExtractionExecutor semanticExtractionExecutor3 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor3Path);
+//        semanticExtractionExecutor3.execute();
+//
+//        SemanticExtractionExecutor semanticExtractionExecutor4 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor4Path);
+//        semanticExtractionExecutor4.execute();
+
         Callable semanticExtractionExecutor1 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
                 posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor1Path);
 
@@ -93,8 +109,6 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
             LOGGER.info(numberOfProcessedSentences + " sentences were processed " + "in " + (elapsedTime / 1000) / 60 + " minutes and "
                     + (elapsedTime / 1000) % 60 + " seconds");
         }
-
     }
-
 
 }

@@ -72,9 +72,9 @@ public class VerbPredicateExtractorImpl implements VerbPredicateExtractor {
             semanticExtractionData.setNegativeVerbPredicate(isNegativeVerbPredicate);
 
         }
-        LOGGER.info("Extended verb predicate: " + extendedPredicate);
-        LOGGER.info("Atomic verb predicate: " + atomicPredicate);
-        LOGGER.info("Is negative verb predicate: " + isNegativeVerbPredicate);
+        //LOGGER.info("Extended verb predicate: " + extendedPredicate);
+        //LOGGER.info("Atomic verb predicate: " + atomicPredicate);
+        //LOGGER.info("Is negative verb predicate: " + isNegativeVerbPredicate);
     }
 
 

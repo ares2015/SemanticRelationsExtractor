@@ -24,12 +24,12 @@ public class InputDataFactoryImpl implements InputDataFactory {
 
     @Override
     public InputData create(String sentence, List<List<String>> tagSequencesMultiList) {
-        LOGGER.info("ENTERING create method of InputDataFactoryImpl... ");
-        LOGGER.info("*********************************************************************");
+        //LOGGER.info("ENTERING create method of InputDataFactoryImpl... ");
+        //LOGGER.info("*********************************************************************");
 
         InputData inputData = new InputData();
 
-        LOGGER.info("Processing sentence < " + sentence);
+        //LOGGER.info("Processing sentence < " + sentence);
 
         List<String> tokensList = tokenizer.splitStringIntoList(sentence);
 
@@ -49,20 +49,20 @@ public class InputDataFactoryImpl implements InputDataFactory {
             }
 
 
-            LOGGER.info("Sentence contains " + subSentencesMultiList.size() + " subSentences.");
+            //LOGGER.info("Sentence contains " + subSentencesMultiList.size() + " subSentences.");
 
 
         } else {
             inputData.setContainsSubSentences(false);
-            LOGGER.info("Sentence does not contain any subSentences.");
+            //LOGGER.info("Sentence does not contain any subSentences.");
 
             inputData.setTokensList(tokensList);
             List<String> tagsList = tokenizer.splitStringIntoList(tagSequencesMultiList.get(0).get(0));
             inputData.setTagsList(tagsList);
         }
 
-        LOGGER.info("LEAVING create method of SubPathDataListFactoryImpl... ");
-        LOGGER.info("*********************************************************************");
+        //LOGGER.info("LEAVING create method of SubPathDataListFactoryImpl... ");
+        //LOGGER.info("*********************************************************************");
 
         return inputData;
     }

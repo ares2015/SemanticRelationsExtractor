@@ -13,8 +13,8 @@ public class MultiListFactoryImpl implements MultiListFactory {
 
     @Override
     public List<List<String>> create(List<String> words) {
-        LOGGER.info("ENTERING create method of MultiListFactoryImpl... ");
-        LOGGER.info("*********************************************************************");
+        //LOGGER.info("ENTERING create method of MultiListFactoryImpl... ");
+        //LOGGER.info("*********************************************************************");
 
         List<List<String>> multiList = new ArrayList<List<String>>();
         List<String> singleList = new ArrayList<>();
@@ -29,20 +29,20 @@ public class MultiListFactoryImpl implements MultiListFactory {
                 String wordWithoutComma = word.substring(0, word.length() - 1);
                 singleList.add(wordWithoutComma);
                 multiList.add(singleList);
-                LOGGER.info("Created singleList with size " + singleList.size() + " and added into multiList.");
+                //LOGGER.info("Created singleList with size " + singleList.size() + " and added into multiList.");
                 singleList = new ArrayList<>();
             }
             //ALWAYS ADD SUBPATH STARTING WITH THE LAST COMMA IN SENTENCE AND ENDING WITH THE
             //LAST TOKEN IN SENTENCE
             if (index == words.size() - 1) {
                 multiList.add(singleList);
-                LOGGER.info("Created singleList with size " + singleList.size() + " and added into multiList.");
+                //LOGGER.info("Created singleList with size " + singleList.size() + " and added into multiList.");
             }
             index++;
         }
-        LOGGER.info("LEAVING create method of MultiListFactoryImpl with  " + multiList.size() + " " +
-                " subPaths created.");
-        LOGGER.info("*********************************************************************");
+        //LOGGER.info("LEAVING create method of MultiListFactoryImpl with  " + multiList.size() + " " +
+//                " subPaths created.");
+        //LOGGER.info("*********************************************************************");
 
         return multiList;
     }
