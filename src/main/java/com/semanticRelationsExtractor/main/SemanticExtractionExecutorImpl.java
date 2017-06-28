@@ -9,6 +9,7 @@ import com.semanticRelationsExtractor.extraction.SemanticRelationsExtractor;
 import com.semanticRelationsExtractor.factories.InputDataFactory;
 import com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessor;
 import com.semanticRelationsExtractor.preprocessing.SemanticPreprocessor;
+import com.semanticRelationsExtractor.tokens.Tokenizer;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -37,6 +38,8 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
 
     private DatabaseInserter databaseInserter;
 
+    private Tokenizer tokenizer;
+
     private String path;
 
     private Integer countSemanticallyProcessedSentences = 0;
@@ -44,13 +47,14 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
     public SemanticExtractionExecutorImpl(InputDataFactory inputDataFactory,
                                           CapitalizedTokensPreprocessor capitalizedTokensPreprocessor, PosTagger posTagger,
                                           SemanticPreprocessor semanticPreprocessor, SemanticRelationsExtractor semanticRelationsExtractor,
-                                          DatabaseInserter databaseInserter, String path) {
+                                          DatabaseInserter databaseInserter, Tokenizer tokenizer, String path) {
         this.inputDataFactory = inputDataFactory;
         this.capitalizedTokensPreprocessor = capitalizedTokensPreprocessor;
         this.posTagger = posTagger;
         this.semanticPreprocessor = semanticPreprocessor;
         this.semanticRelationsExtractor = semanticRelationsExtractor;
         this.databaseInserter = databaseInserter;
+        this.tokenizer = tokenizer;
         this.path = path;
     }
 
@@ -77,6 +81,10 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
                     String[] split = inputDataString.split("#");
                     String sentence = split[0];
                     String object = split[1];
+                    if (tokenizer.splitStringIntoList(sentence).size() > 30) {
+                        inputDataString = br.readLine();
+                        continue;
+                    }
                     System.out.println("Processing sentence: " + sentence);
                     List<List<String>> tagSequencesMultiList = posTagger.tag(sentence);
                     InputData inputData = inputDataFactory.create(sentence, tagSequencesMultiList);

@@ -7,6 +7,8 @@ import com.semanticRelationsExtractor.extraction.SemanticRelationsExtractor;
 import com.semanticRelationsExtractor.factories.InputDataFactory;
 import com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessor;
 import com.semanticRelationsExtractor.preprocessing.SemanticPreprocessor;
+import com.semanticRelationsExtractor.tokens.Tokenizer;
+import com.semanticRelationsExtractor.tokens.TokenizerImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -28,6 +30,8 @@ public class SemanticExtractionExecutorTest {
 
     private DatabaseInserter databaseInserter;
 
+    private Tokenizer tokenizer;
+
     private SemanticExtractionExecutor semanticExtractionExecutor;
 
     private PosTagger posTagger = new PosTaggerImpl();
@@ -41,9 +45,10 @@ public class SemanticExtractionExecutorTest {
         CapitalizedTokensPreprocessor capitalizedTokensPreprocessor = (CapitalizedTokensPreprocessor) context.getBean("capitalizedTokensPreprocessor");
         SemanticPreprocessor semanticPreprocessor = (SemanticPreprocessor) context.getBean("semanticPreprocessor");
         SemanticRelationsExtractor semanticRelationsExtractor = (SemanticRelationsExtractor) context.getBean("semanticRelationsExtractor");
+        tokenizer = new TokenizerImpl();
         databaseInserter = Mockito.mock(DatabaseInserter.class);
         semanticExtractionExecutor = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executorPath);
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executorPath);
     }
 
     @Test
