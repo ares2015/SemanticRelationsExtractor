@@ -77,7 +77,7 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
                     String[] split = inputDataString.split("#");
                     String sentence = split[0];
                     String object = split[1];
-                    LOGGER.info("Processing sentence: " + sentence);
+                    System.out.println("Processing sentence: " + sentence);
                     List<List<String>> tagSequencesMultiList = posTagger.tag(sentence);
                     InputData inputData = inputDataFactory.create(sentence, tagSequencesMultiList);
                     capitalizedTokensPreprocessor.process(inputData);
@@ -92,14 +92,14 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
                         List<String> tokensList = inputData.getTokensList();
                         processSentence(tokensList, tagsList, sentence, object);
                     }
-                    LOGGER.info(nrOfProcessedSentences + " were sentences read and processed");
+                    System.out.println(nrOfProcessedSentences + " were sentences read and processed");
                     inputDataString = br.readLine();
                 } catch (Exception e) {
-                    LOGGER.info(e.getMessage());
+                    System.out.println(e.getMessage());
                     continue;
                 }
             }
-            LOGGER.info(countSemanticallyProcessedSentences + " sentences were semantically processed.");
+            System.out.println(countSemanticallyProcessedSentences + " sentences were semantically processed.");
         } catch (final IOException e) {
             e.printStackTrace();
         } finally {
