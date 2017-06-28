@@ -2,9 +2,6 @@ package com.semanticRelationsExtractor.main;
 
 import com.postagger.main.PosTagger;
 import com.postagger.main.PosTaggerImpl;
-import com.semanticRelationsExtractor.data.InputData;
-import com.semanticRelationsExtractor.data.SemanticExtractionData;
-import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
 import com.semanticRelationsExtractor.database.DatabaseInserter;
 import com.semanticRelationsExtractor.extraction.SemanticRelationsExtractor;
 import com.semanticRelationsExtractor.factories.InputDataFactory;
@@ -13,11 +10,7 @@ import com.semanticRelationsExtractor.preprocessing.SemanticPreprocessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 
@@ -28,9 +21,9 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
     private InputDataFactory inputDataFactory;
 
-    private CapitalizedTokensPreprocessor capitalizedTokensPreprocessor;
+    private PosTagger posTagger = new PosTaggerImpl();
 
-    private PosTagger posTagger;
+    private CapitalizedTokensPreprocessor capitalizedTokensPreprocessor;
 
     private SemanticPreprocessor semanticPreprocessor;
 
@@ -38,7 +31,13 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
     private DatabaseInserter databaseInserter;
 
-    private int countSemanticallyProcessedSentences = 0;
+    private String executor1Path = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\SemanticExtraction\\WikipediaSemanticExtractionData1.txt";
+
+    private String executor2Path = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\SemanticExtraction\\WikipediaSemanticExtractionData2.txt";
+
+    private String executor3Path = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\SemanticExtraction\\WikipediaSemanticExtractionData3.txt";
+
+    private String executor4Path = "C:\\Users\\Oliver\\Documents\\NlpTrainingData\\SemanticExtraction\\WikipediaSemanticExtractionData4.txt";
 
     private final static Logger LOGGER = Logger.getLogger(SemanticExtractionProcessorImpl.class.getName());
 
@@ -48,13 +47,12 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
                                            DatabaseInserter databaseInserter) {
         this.inputDataFactory = inputDataFactory;
         this.capitalizedTokensPreprocessor = capitalizedTokensPreprocessor;
-        this.posTagger = new PosTaggerImpl();
         this.semanticPreprocessor = semanticPreprocessor;
         this.semanticRelationsExtractor = semanticRelationsExtractor;
         this.databaseInserter = databaseInserter;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring_beans.xml");
         SemanticExtractionProcessor semanticExtractionProcessor = (SemanticExtractionProcessor) context.getBean("semanticExtractionProcessor");
         semanticExtractionProcessor.process();
@@ -62,62 +60,41 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
 
     @Override
-    public void process() throws InterruptedException {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader("C:\\Users\\Oliver\\Documents\\NlpTrainingData\\SemanticExtraction\\WikipediaSemanticExtractionData.txt"));
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
+    public void process() throws InterruptedException, ExecutionException {
+        long startTime = System.currentTimeMillis();
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+
+        Callable semanticExtractionExecutor1 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor1Path);
+
+        Callable semanticExtractionExecutor2 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor2Path);
+
+        Callable semanticExtractionExecutor3 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor3Path);
+
+        Callable semanticExtractionExecutor4 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, executor4Path);
+
+        Future future1 = executor.submit(semanticExtractionExecutor1);
+        Future future2 = executor.submit(semanticExtractionExecutor2);
+        Future future3 = executor.submit(semanticExtractionExecutor3);
+        Future future4 = executor.submit(semanticExtractionExecutor4);
+
+        boolean areDataProcessed = false;
+        while (!areDataProcessed) {
+            areDataProcessed = !future1.isDone() && !future2.isDone() && !future3.isDone() && !future4.isDone();
         }
-        try {
-            String inputDataString = br.readLine();
-            while (inputDataString != null) {
-                try {
-                    String[] split = inputDataString.split("#");
-                    String sentence = split[0];
-                    String object = split[1];
-                    LOGGER.info("Processing sentence: " + sentence);
-                    List<List<String>> tagSequencesMultiList = posTagger.tag(sentence);
-                    InputData inputData = inputDataFactory.create(sentence, tagSequencesMultiList);
-                    capitalizedTokensPreprocessor.process(inputData);
-                    if (inputData.containsSubSentences()) {
-                        for (int i = 0; i <= inputData.getTokensMultiList().size() - 1; i++) {
-                            List<String> tokensList = inputData.getTokensMultiList().get(i);
-                            List<String> tagsList = inputData.getTagsMultiList().get(i);
-                            processSentence(tokensList, tagsList, sentence, object);
-                        }
-                    } else {
-                        List<String> tagsList = inputData.getTagsList();
-                        List<String> tokensList = inputData.getTokensList();
-                        processSentence(tokensList, tagsList, sentence, object);
-                    }
-                    inputDataString = br.readLine();
-                } catch (Exception e) {
-                    continue;
-                }
-            }
-            LOGGER.info(countSemanticallyProcessedSentences + " sentences were semantically processed.");
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                br.close();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
+
+        if (areDataProcessed) {
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            int numberOfProcessedSentences = (Integer) future1.get() + (Integer) future2.get() + (Integer) future3.get() + (Integer) future4.get();
+            LOGGER.info(numberOfProcessedSentences + " sentences were processed " + "in " + (elapsedTime / 1000) / 60 + " minutes and "
+                    + (elapsedTime / 1000) % 60 + " seconds");
         }
 
     }
 
 
-    private void processSentence(List<String> tokensList, List<String> tagsList, String sentence, String object) {
-        SemanticPreprocessingData semanticPreprocessingData = semanticPreprocessor.preprocess(tokensList, tagsList);
-        if (semanticPreprocessingData.canGoToExtraction()) {
-            countSemanticallyProcessedSentences++;
-            SemanticExtractionData semanticExtractionData = semanticRelationsExtractor.extract(semanticPreprocessingData);
-            semanticExtractionData.setSentence(sentence);
-            semanticExtractionData.setObject(object);
-            databaseInserter.insertSemanticData(semanticExtractionData);
-        }
-    }
 }
