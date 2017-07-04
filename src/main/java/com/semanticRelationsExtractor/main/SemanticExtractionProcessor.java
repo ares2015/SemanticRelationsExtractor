@@ -1,5 +1,6 @@
 package com.semanticRelationsExtractor.main;
 
+import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -7,6 +8,6 @@ import java.util.concurrent.ExecutionException;
  */
 public interface SemanticExtractionProcessor {
 
-    void process() throws InterruptedException, ExecutionException;
+    void process() throws InterruptedException, ExecutionException, FileNotFoundException;
 
 }

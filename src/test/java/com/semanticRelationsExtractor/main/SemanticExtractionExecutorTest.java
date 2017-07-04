@@ -2,7 +2,7 @@ package com.semanticRelationsExtractor.main;
 
 import com.postagger.main.PosTagger;
 import com.postagger.main.PosTaggerImpl;
-import com.semanticRelationsExtractor.database.DatabaseInserter;
+import com.semanticRelationsExtractor.database.DatabaseAccessor;
 import com.semanticRelationsExtractor.extraction.SemanticRelationsExtractor;
 import com.semanticRelationsExtractor.factories.InputDataFactory;
 import com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessor;
@@ -28,7 +28,7 @@ public class SemanticExtractionExecutorTest {
 
     private SemanticRelationsExtractor semanticRelationsExtractor;
 
-    private DatabaseInserter databaseInserter;
+    private DatabaseAccessor databaseAccessor;
 
     private Tokenizer tokenizer;
 
@@ -46,9 +46,9 @@ public class SemanticExtractionExecutorTest {
         SemanticPreprocessor semanticPreprocessor = (SemanticPreprocessor) context.getBean("semanticPreprocessor");
         SemanticRelationsExtractor semanticRelationsExtractor = (SemanticRelationsExtractor) context.getBean("semanticRelationsExtractor");
         tokenizer = new TokenizerImpl();
-        databaseInserter = Mockito.mock(DatabaseInserter.class);
+        databaseAccessor = Mockito.mock(DatabaseAccessor.class);
         semanticExtractionExecutor = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executorPath);
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executorPath);
     }
 
     @Test

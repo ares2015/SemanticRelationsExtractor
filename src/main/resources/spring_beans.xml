@@ -16,7 +16,7 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="databaseInserter" class="com.semanticRelationsExtractor.database.DatabaseInserterImpl">
+    <bean id="databaseAccessor" class="com.semanticRelationsExtractor.database.DatabaseAccessorImpl">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
@@ -66,7 +66,7 @@
         <constructor-arg ref="capitalizedTokensPreprocessor"/>
         <constructor-arg ref="semanticPreprocessor"/>
         <constructor-arg ref="semanticRelationsExtractor"/>
-        <constructor-arg ref="databaseInserter"/>
+        <constructor-arg ref="databaseAccessor"/>
         <constructor-arg ref="tokenizer"/>
 
     </bean>

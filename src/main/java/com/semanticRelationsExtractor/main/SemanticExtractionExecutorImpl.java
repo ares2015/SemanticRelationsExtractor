@@ -4,7 +4,7 @@ import com.postagger.main.PosTagger;
 import com.semanticRelationsExtractor.data.InputData;
 import com.semanticRelationsExtractor.data.SemanticExtractionData;
 import com.semanticRelationsExtractor.data.SemanticPreprocessingData;
-import com.semanticRelationsExtractor.database.DatabaseInserter;
+import com.semanticRelationsExtractor.database.DatabaseAccessor;
 import com.semanticRelationsExtractor.extraction.SemanticRelationsExtractor;
 import com.semanticRelationsExtractor.factories.InputDataFactory;
 import com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessor;
@@ -36,7 +36,7 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
 
     private SemanticRelationsExtractor semanticRelationsExtractor;
 
-    private DatabaseInserter databaseInserter;
+    private DatabaseAccessor databaseAccessor;
 
     private Tokenizer tokenizer;
 
@@ -47,13 +47,13 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
     public SemanticExtractionExecutorImpl(InputDataFactory inputDataFactory,
                                           CapitalizedTokensPreprocessor capitalizedTokensPreprocessor, PosTagger posTagger,
                                           SemanticPreprocessor semanticPreprocessor, SemanticRelationsExtractor semanticRelationsExtractor,
-                                          DatabaseInserter databaseInserter, Tokenizer tokenizer, String path) {
+                                          DatabaseAccessor databaseAccessor, Tokenizer tokenizer, String path) {
         this.inputDataFactory = inputDataFactory;
         this.capitalizedTokensPreprocessor = capitalizedTokensPreprocessor;
         this.posTagger = posTagger;
         this.semanticPreprocessor = semanticPreprocessor;
         this.semanticRelationsExtractor = semanticRelationsExtractor;
-        this.databaseInserter = databaseInserter;
+        this.databaseAccessor = databaseAccessor;
         this.tokenizer = tokenizer;
         this.path = path;
     }
@@ -127,9 +127,10 @@ public class SemanticExtractionExecutorImpl implements SemanticExtractionExecuto
             SemanticExtractionData semanticExtractionData = semanticRelationsExtractor.extract(semanticPreprocessingData);
             semanticExtractionData.setSentence(sentence);
             semanticExtractionData.setObject(object);
-            databaseInserter.insertSemanticData(semanticExtractionData);
+            if (!databaseAccessor.existsSemanticDataInDatabase(semanticExtractionData)) {
+                databaseAccessor.insertSemanticData(semanticExtractionData);
+            }
         }
     }
-
 
 }

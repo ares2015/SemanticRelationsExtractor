@@ -2,7 +2,7 @@ package com.semanticRelationsExtractor.main;
 
 import com.postagger.main.PosTagger;
 import com.postagger.main.PosTaggerImpl;
-import com.semanticRelationsExtractor.database.DatabaseInserter;
+import com.semanticRelationsExtractor.database.DatabaseAccessor;
 import com.semanticRelationsExtractor.extraction.SemanticRelationsExtractor;
 import com.semanticRelationsExtractor.factories.InputDataFactory;
 import com.semanticRelationsExtractor.preprocessing.CapitalizedTokensPreprocessor;
@@ -11,6 +11,8 @@ import com.semanticRelationsExtractor.tokens.Tokenizer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -30,7 +32,7 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
     private SemanticRelationsExtractor semanticRelationsExtractor;
 
-    private DatabaseInserter databaseInserter;
+    private DatabaseAccessor databaseAccessor;
 
     private Tokenizer tokenizer;
 
@@ -47,16 +49,16 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
     public SemanticExtractionProcessorImpl(InputDataFactory inputDataFactory,
                                            CapitalizedTokensPreprocessor capitalizedTokensPreprocessor,
                                            SemanticPreprocessor semanticPreprocessor, SemanticRelationsExtractor semanticRelationsExtractor,
-                                           DatabaseInserter databaseInserter, Tokenizer tokenizer) {
+                                           DatabaseAccessor databaseAccessor, Tokenizer tokenizer) {
         this.inputDataFactory = inputDataFactory;
         this.capitalizedTokensPreprocessor = capitalizedTokensPreprocessor;
         this.semanticPreprocessor = semanticPreprocessor;
         this.semanticRelationsExtractor = semanticRelationsExtractor;
-        this.databaseInserter = databaseInserter;
+        this.databaseAccessor = databaseAccessor;
         this.tokenizer = tokenizer;
     }
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException, FileNotFoundException {
         ApplicationContext context = new ClassPathXmlApplicationContext("spring_beans.xml");
         SemanticExtractionProcessor semanticExtractionProcessor = (SemanticExtractionProcessor) context.getBean("semanticExtractionProcessor");
         semanticExtractionProcessor.process();
@@ -64,37 +66,37 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
 
 
     @Override
-    public void process() throws InterruptedException, ExecutionException {
+    public void process() throws InterruptedException, ExecutionException, FileNotFoundException {
         long startTime = System.currentTimeMillis();
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
 //        SemanticExtractionExecutor semanticExtractionExecutor1 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor1Path);
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor1Path);
 //        semanticExtractionExecutor1.execute();
 //
 //        SemanticExtractionExecutor semanticExtractionExecutor2 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor2Path);
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor2Path);
 //        semanticExtractionExecutor2.execute();
 //
 //        SemanticExtractionExecutor semanticExtractionExecutor3 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor3Path);
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor3Path);
 //        semanticExtractionExecutor3.execute();
 //
 //        SemanticExtractionExecutor semanticExtractionExecutor4 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor4Path);
+//                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor4Path);
 //        semanticExtractionExecutor4.execute();
 
         Callable semanticExtractionExecutor1 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor1Path);
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor1Path);
 
         Callable semanticExtractionExecutor2 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor2Path);
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor2Path);
 
         Callable semanticExtractionExecutor3 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor3Path);
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor3Path);
 
         Callable semanticExtractionExecutor4 = new SemanticExtractionExecutorImpl(inputDataFactory, capitalizedTokensPreprocessor,
-                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseInserter, tokenizer, executor4Path);
+                posTagger, semanticPreprocessor, semanticRelationsExtractor, databaseAccessor, tokenizer, executor4Path);
 
         Future future1 = executor.submit(semanticExtractionExecutor1);
         Future future2 = executor.submit(semanticExtractionExecutor2);
@@ -112,6 +114,15 @@ public class SemanticExtractionProcessorImpl implements SemanticExtractionProces
             int numberOfProcessedSentences = (Integer) future1.get() + (Integer) future2.get() + (Integer) future3.get() + (Integer) future4.get();
             LOGGER.info(numberOfProcessedSentences + " sentences were processed " + "in " + (elapsedTime / 1000) / 60 + " minutes and "
                     + (elapsedTime / 1000) % 60 + " seconds");
+
+            PrintWriter pw1 = new PrintWriter(executor1Path);
+            pw1.close();
+            PrintWriter pw2 = new PrintWriter(executor2Path);
+            pw2.close();
+            PrintWriter pw3 = new PrintWriter(executor3Path);
+            pw3.close();
+            PrintWriter pw4 = new PrintWriter(executor4Path);
+            pw4.close();
         }
     }
 
